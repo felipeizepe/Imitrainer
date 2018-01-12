@@ -13,6 +13,11 @@
 		6ABD571C20079B14005BA35B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ABD571B20079B14005BA35B /* Assets.xcassets */; };
 		6ABD571F20079B14005BA35B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ABD571D20079B14005BA35B /* LaunchScreen.storyboard */; };
 		6ABD572A2007AD50005BA35B /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57292007AD50005BA35B /* ListViewCell.swift */; };
+		6ABD572D2007B28B005BA35B /* RecordDataMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD572C2007B28B005BA35B /* RecordDataMock.swift */; };
+		6ABD572F2007B2B5005BA35B /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD572E2007B2B5005BA35B /* Recording.swift */; };
+		6ABD57312007B38A005BA35B /* AudioInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57302007B38A005BA35B /* AudioInfo.swift */; };
+		6ABD57352007BE7F005BA35B /* RecordingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57342007BE7F005BA35B /* RecordingAPI.swift */; };
+		6ABD57372007BF2C005BA35B /* RecordingAPIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		6ABD571E20079B14005BA35B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6ABD572020079B14005BA35B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ABD57292007AD50005BA35B /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
+		6ABD572C2007B28B005BA35B /* RecordDataMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataMock.swift; sourceTree = "<group>"; };
+		6ABD572E2007B2B5005BA35B /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
+		6ABD57302007B38A005BA35B /* AudioInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInfo.swift; sourceTree = "<group>"; };
+		6ABD57342007BE7F005BA35B /* RecordingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAPI.swift; sourceTree = "<group>"; };
+		6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAPIMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +66,8 @@
 		6ABD571320079B14005BA35B /* Imitrainer */ = {
 			isa = PBXGroup;
 			children = (
+				6ABD57322007BE4C005BA35B /* APIs */,
+				6ABD572B2007B273005BA35B /* MOCK */,
 				6ABD57282007AD19005BA35B /* Data */,
 				6ABD57272007AD0D005BA35B /* ViewControllers */,
 				6ABD57262007AD04005BA35B /* View */,
@@ -87,8 +99,35 @@
 		6ABD57282007AD19005BA35B /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6ABD572E2007B2B5005BA35B /* Recording.swift */,
+				6ABD57302007B38A005BA35B /* AudioInfo.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		6ABD572B2007B273005BA35B /* MOCK */ = {
+			isa = PBXGroup;
+			children = (
+				6ABD572C2007B28B005BA35B /* RecordDataMock.swift */,
+				6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */,
+			);
+			path = MOCK;
+			sourceTree = "<group>";
+		};
+		6ABD57322007BE4C005BA35B /* APIs */ = {
+			isa = PBXGroup;
+			children = (
+				6ABD57332007BE69005BA35B /* Recording */,
+			);
+			path = APIs;
+			sourceTree = "<group>";
+		};
+		6ABD57332007BE69005BA35B /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				6ABD57342007BE7F005BA35B /* RecordingAPI.swift */,
+			);
+			path = Recording;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,7 +204,12 @@
 			files = (
 				6ABD571720079B14005BA35B /* ListViewController.swift in Sources */,
 				6ABD572A2007AD50005BA35B /* ListViewCell.swift in Sources */,
+				6ABD57372007BF2C005BA35B /* RecordingAPIMock.swift in Sources */,
+				6ABD572D2007B28B005BA35B /* RecordDataMock.swift in Sources */,
 				6ABD571520079B14005BA35B /* AppDelegate.swift in Sources */,
+				6ABD57352007BE7F005BA35B /* RecordingAPI.swift in Sources */,
+				6ABD57312007B38A005BA35B /* AudioInfo.swift in Sources */,
+				6ABD572F2007B2B5005BA35B /* Recording.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
