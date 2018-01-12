@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A8197632008EAB700299094 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8197622008EAB700299094 /* RecordViewController.swift */; };
 		6ABD571520079B14005BA35B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD571420079B14005BA35B /* AppDelegate.swift */; };
 		6ABD571720079B14005BA35B /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD571620079B14005BA35B /* ListViewController.swift */; };
 		6ABD571A20079B14005BA35B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ABD571820079B14005BA35B /* Main.storyboard */; };
@@ -18,9 +19,13 @@
 		6ABD57312007B38A005BA35B /* AudioInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57302007B38A005BA35B /* AudioInfo.swift */; };
 		6ABD57352007BE7F005BA35B /* RecordingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57342007BE7F005BA35B /* RecordingAPI.swift */; };
 		6ABD57372007BF2C005BA35B /* RecordingAPIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */; };
+		ED72E8D78A290D824FF309A9 /* Pods_Imitrainer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 622670F6BF620EAE0DE1C813 /* Pods_Imitrainer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		046561974F689DCE8AA00BB5 /* Pods-Imitrainer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imitrainer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer.debug.xcconfig"; sourceTree = "<group>"; };
+		622670F6BF620EAE0DE1C813 /* Pods_Imitrainer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Imitrainer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A8197622008EAB700299094 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		6ABD571120079B14005BA35B /* Imitrainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Imitrainer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ABD571420079B14005BA35B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6ABD571620079B14005BA35B /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +39,7 @@
 		6ABD57302007B38A005BA35B /* AudioInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInfo.swift; sourceTree = "<group>"; };
 		6ABD57342007BE7F005BA35B /* RecordingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAPI.swift; sourceTree = "<group>"; };
 		6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAPIMock.swift; sourceTree = "<group>"; };
+		E07313653504C2211CC9E3E5 /* Pods-Imitrainer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imitrainer.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED72E8D78A290D824FF309A9 /* Pods_Imitrainer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +59,8 @@
 			children = (
 				6ABD571320079B14005BA35B /* Imitrainer */,
 				6ABD571220079B14005BA35B /* Products */,
+				91001FA69728F6567FB15682 /* Pods */,
+				B80575B63FEA9F6DE96F3496 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				6ABD571620079B14005BA35B /* ListViewController.swift */,
+				6A8197622008EAB700299094 /* RecordViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -130,6 +140,23 @@
 			path = Recording;
 			sourceTree = "<group>";
 		};
+		91001FA69728F6567FB15682 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				046561974F689DCE8AA00BB5 /* Pods-Imitrainer.debug.xcconfig */,
+				E07313653504C2211CC9E3E5 /* Pods-Imitrainer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B80575B63FEA9F6DE96F3496 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				622670F6BF620EAE0DE1C813 /* Pods_Imitrainer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -137,9 +164,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6ABD572320079B14005BA35B /* Build configuration list for PBXNativeTarget "Imitrainer" */;
 			buildPhases = (
+				D794BBECE3CE5CB24F20E7FA /* [CP] Check Pods Manifest.lock */,
 				6ABD570D20079B14005BA35B /* Sources */,
 				6ABD570E20079B14005BA35B /* Frameworks */,
 				6ABD570F20079B14005BA35B /* Resources */,
+				87B560804DFFC06CB7EA770C /* [CP] Embed Pods Frameworks */,
+				EEBDF68E61C60400D82B9A1D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -197,6 +227,70 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		87B560804DFFC06CB7EA770C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer-frameworks.sh",
+				"${PODS_ROOT}/AudioKit/iOS/AudioKit.framework",
+				"${PODS_ROOT}/AudioKit/iOS/AudioKitUI.framework",
+				"${BUILT_PRODUCTS_DIR}/Beethoven/Beethoven.framework",
+				"${BUILT_PRODUCTS_DIR}/FDWaveformView/FDWaveformView.framework",
+				"${BUILT_PRODUCTS_DIR}/Pitchy/Pitchy.framework",
+				"${BUILT_PRODUCTS_DIR}/SoundWave/SoundWave.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AudioKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AudioKitUI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Beethoven.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FDWaveformView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pitchy.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SoundWave.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D794BBECE3CE5CB24F20E7FA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Imitrainer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EEBDF68E61C60400D82B9A1D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6ABD570D20079B14005BA35B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -205,6 +299,7 @@
 				6ABD571720079B14005BA35B /* ListViewController.swift in Sources */,
 				6ABD572A2007AD50005BA35B /* ListViewCell.swift in Sources */,
 				6ABD57372007BF2C005BA35B /* RecordingAPIMock.swift in Sources */,
+				6A8197632008EAB700299094 /* RecordViewController.swift in Sources */,
 				6ABD572D2007B28B005BA35B /* RecordDataMock.swift in Sources */,
 				6ABD571520079B14005BA35B /* AppDelegate.swift in Sources */,
 				6ABD57352007BE7F005BA35B /* RecordingAPI.swift in Sources */,
@@ -344,6 +439,7 @@
 		};
 		6ABD572420079B14005BA35B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 046561974F689DCE8AA00BB5 /* Pods-Imitrainer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -359,6 +455,7 @@
 		};
 		6ABD572520079B14005BA35B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E07313653504C2211CC9E3E5 /* Pods-Imitrainer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
