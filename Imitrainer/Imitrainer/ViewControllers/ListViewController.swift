@@ -31,15 +31,15 @@ class ListViewController: UIViewController {
 		
 		//Retrieves the Recording list
 		SharedRecordingAPI.shared.getRecordings(completion: { [unowned self] (success, message, recordings) in
-			
 			self.recordingList = recordings
+			
+			//Updates the data and the views
 			
 			DispatchQueue.main.async {
 				self.recordListTableView.reloadData()
 				self.view.isUserInteractionEnabled = true
 			}
-			
-			
+
 		})
 		
 	}

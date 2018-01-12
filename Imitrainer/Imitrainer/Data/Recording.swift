@@ -20,6 +20,12 @@ class Recording  {
 	
 	//MARK: Methods
 	
+	
+	/// Initializer fot the recording class
+	///
+	/// - Parameters:
+	///   - recordingName: Custom name for the recording
+	///   - recordedInfo: Info about the recording in a AudioInfo class
 	init(recordingName: String, recordedInfo: AudioInfo) {
 		self.name = recordingName
 		self.infoData = recordedInfo

@@ -10,9 +10,11 @@ import UIKit
 
 class ListViewCell: UITableViewCell {
 	
-	
+	//MARK: Outlets
 	@IBOutlet weak var recordNameLabel: UILabel!
 	@IBOutlet weak var recordImage: UIImageView!
+	
+	//MARK: Properties
 	
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -13,6 +13,10 @@ class RecordDataMock {
 	
 	static var recordingList: [Recording] = generateRecording()
 	
+	
+	/// Method that generates the recodings as mocked data
+	///
+	/// - Returns: list of mocked recorded data
 	static func generateRecording() -> [Recording] {
 		var list = [Recording]()
 		
@@ -57,12 +61,6 @@ class RecordDataMock {
 			print("ERROR GENERATING THE MOCK FILE")
 			return list
 		}
-	
-		
-	
-		
-		
-		
 		return list
 	}
 	

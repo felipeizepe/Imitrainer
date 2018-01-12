@@ -21,6 +21,10 @@ class SharedRecordingAPI {
 //MARK: Recording protocol
 protocol RecordingAPI {
 	
+	
+	/// Method that returns a list of recordings that was saved in the phone
+	///
+	/// - Parameter completion: method to be called after the completion of the retrival of the list, successfully or not
 	func getRecordings( completion: @escaping (_ success: Bool, _ message: String?, _ event: [Recording]?) -> Void)
 	
 }
