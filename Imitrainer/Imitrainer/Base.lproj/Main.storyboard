@@ -118,10 +118,20 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LkD-fK-uF7">
                                         <rect key="frame" x="15" y="127.5" width="20" height="28"/>
                                         <state key="normal" image="MicBut"/>
+                                        <state key="disabled" image="DictationDeactivated"/>
+                                        <state key="selected" image="DictationClicked"/>
+                                        <connections>
+                                            <action selector="recordPress:" destination="bUu-Z2-aNX" eventType="touchUpInside" id="pZt-M7-CPe"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1bd-vg-R6d">
                                         <rect key="frame" x="340" y="133.5" width="20" height="22"/>
                                         <state key="normal" image="StopBut"/>
+                                        <state key="disabled" image="StopButtonDeactivted"/>
+                                        <state key="selected" image="StopClick"/>
+                                        <connections>
+                                            <action selector="stopPress:" destination="bUu-Z2-aNX" eventType="touchUpInside" id="wYs-KA-dvV"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.3213348388671875" green="0.079883821308612823" blue="0.084089271724224091" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -139,11 +149,11 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jfc-pA-t4c">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="jfc-pA-t4c">
                                 <rect key="frame" x="157" y="89" width="203" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LUv-ml-rsu">
                                 <rect key="frame" x="0.0" y="329.5" width="375" height="48"/>
@@ -163,14 +173,36 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HK4-SJ-mP3">
                                 <rect key="frame" x="69" y="434.5" width="291" height="58"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWH-of-pKi" customClass="AudioVisualizationView" customModule="SoundWave">
+                                        <rect key="frame" x="0.0" y="0.0" width="291" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="jWH-of-pKi" secondAttribute="trailing" id="DGc-aQ-H33"/>
+                                    <constraint firstItem="jWH-of-pKi" firstAttribute="leading" secondItem="HK4-SJ-mP3" secondAttribute="leading" id="I4y-df-wzR"/>
                                     <constraint firstAttribute="width" secondItem="HK4-SJ-mP3" secondAttribute="height" multiplier="15:3" id="RaZ-M8-Cmf"/>
+                                    <constraint firstItem="jWH-of-pKi" firstAttribute="top" secondItem="HK4-SJ-mP3" secondAttribute="top" id="ahb-YV-ETF"/>
+                                    <constraint firstAttribute="bottom" secondItem="jWH-of-pKi" secondAttribute="bottom" id="cFc-GL-n6d"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Arb-Lr-6X1">
                                 <rect key="frame" x="69" y="530" width="291" height="58"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qod-aM-MbE">
+                                        <rect key="frame" x="0.0" y="0.0" width="291" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Qod-aM-MbE" firstAttribute="leading" secondItem="Arb-Lr-6X1" secondAttribute="leading" id="694-cW-edA"/>
+                                    <constraint firstAttribute="bottom" secondItem="Qod-aM-MbE" secondAttribute="bottom" id="AnC-HL-HRE"/>
+                                    <constraint firstItem="Qod-aM-MbE" firstAttribute="top" secondItem="Arb-Lr-6X1" secondAttribute="top" id="Ifq-ay-yxP"/>
+                                    <constraint firstAttribute="trailing" secondItem="Qod-aM-MbE" secondAttribute="trailing" id="kW9-Od-OrZ"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.031346224249999999" green="0.37062597269999997" blue="0.4956507087" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -204,8 +236,20 @@
                         <viewLayoutGuide key="safeArea" id="B0j-1t-wtc"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Recording" id="uoM-aN-gps">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="pc8-dQ-JGq"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="pc8-dQ-JGq">
+                            <connections>
+                                <action selector="savePressed:" destination="bUu-Z2-aNX" id="DJK-dg-1AM"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="graphMicPlot" destination="CF5-rf-zcT" id="e3E-0l-waV"/>
+                        <outlet property="pitchAudioView" destination="jWH-of-pKi" id="9yM-qR-2FH"/>
+                        <outlet property="recordButton" destination="LkD-fK-uF7" id="kgV-mU-GgD"/>
+                        <outlet property="recordinNameField" destination="jfc-pA-t4c" id="0aV-AC-Q8g"/>
+                        <outlet property="saveButton" destination="pc8-dQ-JGq" id="mLl-xj-E0l"/>
+                        <outlet property="stopButton" destination="1bd-vg-R6d" id="x3j-Za-QNf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AyO-uc-gQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -312,8 +356,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="DictationClicked" width="20" height="28"/>
+        <image name="DictationDeactivated" width="20" height="28"/>
         <image name="MicBut" width="20" height="28"/>
         <image name="StopBut" width="20" height="20"/>
+        <image name="StopButtonDeactivted" width="20" height="20"/>
+        <image name="StopClick" width="20" height="20"/>
         <image name="placeholder" width="340" height="118"/>
     </resources>
 </document>
