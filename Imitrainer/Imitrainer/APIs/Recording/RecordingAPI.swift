@@ -13,7 +13,7 @@ class SharedRecordingAPI {
 	//MARK: Properties
 	
 	//Shared singleton instance
-	static let shared: RecordingAPI = RecordingAPIMock()
+	static let shared: RecordingAPI = FileSavedRecordingsAPI()
 	
 }
 

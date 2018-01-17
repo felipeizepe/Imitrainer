@@ -8,6 +8,7 @@
 
 import Foundation
 import AVFoundation
+import AudioKit
 
 class RecordDataMock {
 	
@@ -40,7 +41,7 @@ class RecordDataMock {
 										 AVSampleRateKey: 44100.0] as [String : Any]
 		
 		do{
-			let audFile = try AVAudioFile(forWriting: fileURL, settings: settings)
+			let audFile = EZAudioFile(url: fileURL)!
 			
 			let freqs = [Float(2.0), Float(3.0), Float(4.0), Float(5.0)]
 			let pitchs = [Float(20.0), Float(30.0), Float(40.0), Float(50.0)]

@@ -7,13 +7,13 @@
 //
 
 import Foundation
-import AVFoundation
+import AudioKit
 
 /// Class that defines the objetct which hold the information about the recoring audio file
 class AudioInfo {
 
 	//MARK: Properties
-	var audioFile: AVAudioFile
+	var audioFile: EZAudioFile
 	var frequencies: [Float]
 	var pitches: [Float]
 	
@@ -26,7 +26,7 @@ class AudioInfo {
 	///   - recordedAudioFile: AVAudioFile with the sound of the recording
 	///   - recordedFrequencies: array with the recorded frequencies
 	///   - recordedPitches: array with the value for the recorded pitches
-	init(recordedAudioFile: AVAudioFile, recordedFrequencies: [Float], recordedPitches: [Float]) {
+	init(recordedAudioFile: EZAudioFile, recordedFrequencies: [Float], recordedPitches: [Float]) {
 		self.audioFile = recordedAudioFile
 		self.frequencies = recordedFrequencies
 		self.pitches = recordedPitches

@@ -134,7 +134,7 @@ class RecordViewController : UIViewController {
 	}
 	
 	func startRecording() {
-		let audioFilename = getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).m4a")
+		let audioFilename = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).m4a")
 		
 		let settings = [
 			AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -195,7 +195,7 @@ class RecordViewController : UIViewController {
 		}
 	}
 	
-	func getDocumentsDirectory() -> URL {
+	static func getDocumentsDirectory() -> URL {
 		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		let documentsDirectory = paths[0]
 		return documentsDirectory

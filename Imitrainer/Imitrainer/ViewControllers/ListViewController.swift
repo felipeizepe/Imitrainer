@@ -29,6 +29,12 @@ class ListViewController: UIViewController {
 		recordListTableView.delegate = self
 		recordListTableView.dataSource = self
 		
+		
+		
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		
 		//Retrieves the Recording list
 		SharedRecordingAPI.shared.getRecordings(completion: { [unowned self] (success, message, recordings) in
 			self.recordingList = recordings
@@ -39,9 +45,19 @@ class ListViewController: UIViewController {
 				self.recordListTableView.reloadData()
 				self.view.isUserInteractionEnabled = true
 			}
-
+			
 		})
 		
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "playRecordingSegue" {
+			let index = sender as! Int
+			
+			let playView = segue.destination as! PlayViewController
+			playView.recording = self.recordingList![index]
+			
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -78,7 +94,7 @@ extension ListViewController : UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		performSegue(withIdentifier: "playRecordingSegue", sender: nil)
+		performSegue(withIdentifier: "playRecordingSegue", sender: indexPath.row)
 	}
 	
 }
