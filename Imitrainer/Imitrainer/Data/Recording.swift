@@ -13,9 +13,9 @@ import Foundation
 class Recording  {
 	
 	//MARK: Properties
-	var name : String
-	var infoData: AudioInfo
-	var lastRatign : Double?
+	var name : 				String
+	var infoData: 		AudioInfo
+	var lastRatign : 	Double?
 	
 	
 	//MARK: Methods

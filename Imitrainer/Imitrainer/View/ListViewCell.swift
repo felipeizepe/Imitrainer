@@ -12,7 +12,7 @@ class ListViewCell: UITableViewCell {
 	
 	//MARK: Outlets
 	@IBOutlet weak var recordNameLabel: UILabel!
-	@IBOutlet weak var recordImage: UIImageView!
+	@IBOutlet weak var recordImage: 		UIImageView!
 	
 	//MARK: Properties
 	

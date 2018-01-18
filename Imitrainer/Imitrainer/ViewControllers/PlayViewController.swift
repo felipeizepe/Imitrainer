@@ -20,19 +20,13 @@ class PlayViewController : UIViewController {
 	@IBOutlet weak var recordingNameLabel: UILabel!
 	
 	@IBOutlet weak var audioPlotOriginal: EZAudioPlot!
-	
-	@IBOutlet weak var audioPlotNew: EZAudioPlot!
-	
-
+	@IBOutlet weak var audioPlotNew: 			EZAudioPlot!
 	@IBOutlet weak var pitchViewOriginal: AudioVisualizationView!
-	
-	
-	@IBOutlet weak var pitchViewNew: AudioVisualizationView!
+	@IBOutlet weak var pitchViewNew: 			AudioVisualizationView!
 	
 	@IBOutlet weak var plotOriginalWidth: NSLayoutConstraint!
 	
 	@IBOutlet weak var recordButton: UIButton!
-	
 	@IBOutlet weak var listenButton: UIButton!
 	//MARK: Properties
 	
@@ -40,17 +34,18 @@ class PlayViewController : UIViewController {
 	
 	
 	//AudioKit properties
-	var microphone: AKMicrophone!
-	var freqTracker: AKFrequencyTracker!
-	var freqSilence: AKBooster!
+	var microphone: 		AKMicrophone!
+	var freqTracker: 		AKFrequencyTracker!
+	var freqSilence: 		AKBooster!
 	var microphonePlot: AKNodeOutputPlot!
-	var player : EZAudioPlayer!
+	var player : 				EZAudioPlayer!
 	
 	//Pitch engine properties
-	var pitchEngine : PitchEngine!
+	var pitchEngine : 			PitchEngine!
+	var lastDetectedPitch : Pitch?
 	var maxPitch = 500.0
 	var minPitch = 30.0
-	var lastDetectedPitch : Pitch?
+	
 	
 	weak var timer: Timer!
 	
@@ -69,7 +64,7 @@ class PlayViewController : UIViewController {
 		setupMicrophonePlot()
 		setupRecordPlot()
 		
-		//MARK: Pitch setup
+		//MARK: Pitch graph setup
 		
 		setupPitchListener()
 		setupPitchGraph()
@@ -100,96 +95,84 @@ class PlayViewController : UIViewController {
 		self.microphonePlot = plot
 	}
 	
+	
+	/// Sets up the plot of the graph of the recording file
 	func setupRecordPlot(){
-		do {
-			let waveFormData = self.recording.infoData.audioFile.getWaveformData()
-			let time = self.recording.infoData.audioFile.duration
-			let factor = 36.5
-			
-			self.plotOriginalWidth.constant = CGFloat(time * factor)
-			
-			self.view.updateConstraints()
-			
-			self.audioPlotOriginal.shouldFill = true
-			self.audioPlotOriginal.shouldMirror = true
-			self.audioPlotOriginal.color = UIColor.white
-			
-			//Plot adaptation to the screen
-			self.audioPlotOriginal.fadeout = true
-			self.audioPlotOriginal.gain = 2.5
-			
-			self.audioPlotOriginal.updateBuffer(waveFormData?.buffers[0], withBufferSize: waveFormData!.bufferSize)
-
-		}catch {
-			print(error)
-		}
 		
+		let waveFormData = self.recording.infoData.audioFile.getWaveformData()
+		let time = self.recording.infoData.audioFile.duration
+		let factor = 36.5
 		
+		//Adjust the plot of the audiofile to match the size of the screen
+		self.plotOriginalWidth.constant = CGFloat(time * factor)
+		self.view.updateConstraints()
+		
+		self.audioPlotOriginal.shouldFill = true
+		self.audioPlotOriginal.shouldMirror = true
+		self.audioPlotOriginal.color = UIColor.white
+		
+		//Plot adaptation to the screen
+		self.audioPlotOriginal.fadeout = true
+		self.audioPlotOriginal.gain = 2.5
+		self.audioPlotOriginal.updateBuffer(waveFormData?.buffers[0], withBufferSize: waveFormData!.bufferSize)
 		
 	}
 	
+	
+	/// Sets up the pitch input reader
 	func setupPitchListener(){
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
 	}
 	
+	
+	/// Sets up the pitch graph
 	func setupPitchGraph(){
-		
 		self.pitchViewNew.meteringLevelBarWidth = 2.5
 		self.pitchViewNew.meteringLevelBarInterItem = 1.0
 		self.pitchViewNew.meteringLevelBarCornerRadius = 1.0
 		self.pitchViewNew.audioVisualizationMode = .write
 		self.pitchViewNew.gradientStartColor = UIColor.white
 		self.pitchViewNew.gradientEndColor = UIColor.black
-		
 	}
 	
+	
+	/// Adds a value of pitch to the graph
+	///
+	/// - Parameter pitch: pitch to be added
 	func addBarToPitchGraph(pitch : Pitch){
 		
-		if pitch.frequency > self.minPitch {
-			
-			var value : Double
-			
-			if pitch.frequency > self.maxPitch {
-				value = self.maxPitch
-			}else {
-				value = pitch.frequency
-			}
-			
-			let percent = value/maxPitch
-			
-			self.pitchViewNew.addMeteringLevel(Float(percent))
-			
+		var value : Double
+		
+		if pitch.frequency > self.maxPitch {
+			value = self.maxPitch
+		}else {
+			value = pitch.frequency
 		}
+		
+		let percent = value/maxPitch
+		
+		self.pitchViewNew.addMeteringLevel(Float(percent))
 		
 	}
 	
+	//Sets up the pitch graph for the received audio file
 	func setupOroginalPitchGraph(){
-		
-		
 		self.pitchViewOriginal.meteringLevelBarWidth = 2.5
 		self.pitchViewOriginal.meteringLevelBarInterItem = 1.0
 		self.pitchViewOriginal.meteringLevelBarCornerRadius = 1.0
 		self.pitchViewOriginal.audioVisualizationMode = .write
 		self.pitchViewOriginal.gradientStartColor = UIColor.white
 		self.pitchViewOriginal.gradientEndColor = UIColor.black
-
-		let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
-			
-		let array = NSArray(contentsOf: url) as? [Float]
 		
-		if array == nil {
-			return
-		}
-		
-		for value in array! {
+		for value in recording.infoData.pitches {
 			pitchViewOriginal.addMeteringLevel(value)
 		}
 		
-			
-	
 	}
 	
+	
+	/// Uptades the pitch graph with a new value every second
 	@objc func updatePitchPlot(){
 		do{
 			var pitchToDraw : Pitch? = nil
@@ -208,6 +191,8 @@ class PlayViewController : UIViewController {
 		}
 	}
 	
+	
+	/// Function that stops the recording after a certain amount of time has passed
 	@objc func stopRecoring(){
 		self.pitchEngine.stop()
 		
@@ -221,6 +206,8 @@ class PlayViewController : UIViewController {
 		recordButton.isEnabled = true
 	}
 	
+	
+	/// Functios that start the signal reading and recording
 	func startSignalRead(){
 		
 		self.microphonePlot.resetHistoryBuffers()
@@ -228,6 +215,7 @@ class PlayViewController : UIViewController {
 		
 		AudioKit.start()
 		self.pitchEngine.start()
+		
 		//setup the timer
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
 		
@@ -242,21 +230,16 @@ class PlayViewController : UIViewController {
 	//MARK: Action Outlests
 	@IBAction func recordClicked(_ sender: Any) {
 		recordButton.isEnabled = false
-		
 		startSignalRead()
 		
 	}
 	
 	@IBAction func listenClicked(_ sender: Any) {
 		listenButton.isEnabled = false
-		
 		self.player.playAudioFile(recording.infoData.audioFile)
 		
 		startSignalRead()
 	}
-	
-
-	
 }
 
 extension PlayViewController : PitchEngineDelegate {
@@ -271,6 +254,5 @@ extension PlayViewController : PitchEngineDelegate {
 	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {
 		print("TRESH: \(pitchEngine.levelThreshold)")
 	}
-	
 	
 }

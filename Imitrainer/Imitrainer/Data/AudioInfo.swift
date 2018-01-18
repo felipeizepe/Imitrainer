@@ -13,9 +13,9 @@ import AudioKit
 class AudioInfo {
 
 	//MARK: Properties
-	var audioFile: EZAudioFile
-	var frequencies: [Float]
-	var pitches: [Float]
+	var audioFile: 		EZAudioFile
+	var frequencies: 	[Float]
+	var pitches: 			[Float]
 	
 	//MARK: Methods
 	

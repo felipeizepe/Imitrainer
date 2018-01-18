@@ -21,46 +21,43 @@ class RecordViewController : UIViewController {
 	
 	@IBOutlet weak var recordinNameField: UITextField!
 	
-	@IBOutlet weak var graphMicPlot: EZAudioPlot!
+	@IBOutlet weak var graphMicPlot: 		EZAudioPlot!
+	@IBOutlet weak var pitchAudioView: 	AudioVisualizationView!
 	
-	@IBOutlet weak var pitchAudioView: AudioVisualizationView!
-	
-	@IBOutlet weak var saveButton: UIBarButtonItem!
-	
-	@IBOutlet weak var recordButton: UIButton!
-	
-	@IBOutlet weak var stopButton: UIButton!
+	@IBOutlet weak var saveButton: 		UIBarButtonItem!
+	@IBOutlet weak var recordButton: 	UIButton!
+	@IBOutlet weak var stopButton: 		UIButton!
 	
 	//MARK: Properties
 	
 	
 	//AudioKit properties
-	var microphone: AKMicrophone!
-	var freqTracker: AKFrequencyTracker!
-	var freqSilence: AKBooster!
+	var microphone: 	AKMicrophone!
+	var freqTracker: 	AKFrequencyTracker!
+	var freqSilence: 	AKBooster!
 	
 	
 	//Pitch engine properties
-	var pitchEngine : PitchEngine!
+	var pitchEngine : 				PitchEngine!
+		var lastDetectedPitch : Pitch?
 	var maxPitch = 500.0
 	var minPitch = 30.0
-	var lastDetectedPitch : Pitch?
+
 	
+	//Timer to add a pitch every second
 	weak var timer: Timer!
 	
 	//AVAudioRecord properties
 	var avRecordingSession: AVAudioSession!
-	var avAudioRecorder: AVAudioRecorder!
+	var avAudioRecorder: 		AVAudioRecorder!
 	
 	
 	//MAKR: Lifecycle Methods
 	override func viewDidLoad() {
 		//Keyboard dismiss setup
 		let tap = UITapGestureRecognizer(target: self, action: (#selector(RecordViewController.dismissKeyboard)))
-		
 		tap.cancelsTouchesInView = false
 		self.view.addGestureRecognizer(tap)
-		
 		self.recordinNameField.delegate = self
 		
 		//MARK: Audiokit microphone setup
@@ -71,7 +68,6 @@ class RecordViewController : UIViewController {
 		setupMicrophonePlot()
 		
 		//MARK: Pitch setup
-		
 		setupPitchListener()
 		setupPitchGraph()
 		
@@ -81,11 +77,10 @@ class RecordViewController : UIViewController {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		
 		//MARK: AudioKit output setup
+		//Initial setup so that the audiokit read silence
 		AudioKit.output = self.freqSilence
 		
-
 	}
 	
 	//MARK: Auxiliary Methods
@@ -106,11 +101,16 @@ class RecordViewController : UIViewController {
 		graphMicPlot.sendSubview(toBack: plot)
 	}
 	
+	
+	/// setus up the pitch input
 	func setupPitchListener(){
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
 	}
 	
+	
+	
+	/// Configures the pitch graph layout
 	func setupPitchGraph(){
 		
 		self.pitchAudioView.meteringLevelBarWidth = 2.5
@@ -119,21 +119,23 @@ class RecordViewController : UIViewController {
 		self.pitchAudioView.audioVisualizationMode = .write
 		self.pitchAudioView.gradientStartColor = UIColor.white
 		self.pitchAudioView.gradientEndColor = UIColor.black
-		
 	}
 	
+	
+	/// Sets up the avSession to start the recording
 	func setupAVSession(){
 		avRecordingSession = AVAudioSession.sharedInstance()
-		
 		do {
-
 			try avRecordingSession.setActive(true)
 		} catch {
 			print("Can`t record!")
 		}
 	}
 	
+	
+	/// Starts the recording of the received audio
 	func startRecording() {
+		//Gets the path where the audio should be recorded
 		let audioFilename = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).m4a")
 		
 		let settings = [
@@ -143,6 +145,7 @@ class RecordViewController : UIViewController {
 			AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
 		]
 		
+		//Generates the file for the recording
 		do {
 			avAudioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
 			avAudioRecorder.delegate = self
@@ -152,78 +155,82 @@ class RecordViewController : UIViewController {
 		}
 	}
 	
+	
+	/// Finishes the recording process and generates de m4a file with the sound
+	///
+	/// - Parameter success: indicates whether the operation of the recording was succesful or not
 	func finishRecording(success: Bool) {
 		avAudioRecorder.stop()
 		avAudioRecorder = nil
 		
-		do{
-			
-			let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
-			
-			
-			try NSArray(array: pitchAudioView.meteringLevelsArray).write(to: url, atomically: false)
-			
-			
-		}catch {
-			print(error)
-		}
-		
-		
-		
-		
+		//Writes the pith info to a file
+		let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
+		NSArray(array: pitchAudioView.meteringLevelsArray).write(to: url, atomically: false)
 		
 	}
 	
+	
+	/// Method that add a pitch bar to the graph
+	///
+	/// - Parameter pitch: measure pitch to be added
 	func addBarToPitchGraph(pitch : Pitch){
 		
-		if pitch.frequency > self.minPitch {
-			
-			var value : Double
-			
-			if pitch.frequency > self.maxPitch {
-				value = self.maxPitch
-			}else {
-				value = pitch.frequency
-			}
-			
-			let percent = value/maxPitch
-			
-			self.pitchAudioView.addMeteringLevel(Float(percent))
-			
+		//Verifies if the pitch if the pitch isn`t above the max
+		
+		var value : Double
+		
+		if pitch.frequency > self.maxPitch {
+			value = self.maxPitch
+		}else {
+			value = pitch.frequency
 		}
 		
+		let percent = value/maxPitch
+		
+		self.pitchAudioView.addMeteringLevel(Float(percent))
 	}
 	
+	
+	/// Function that causes the graph to update every second to maintain the syncrony
 	@objc func updatePitchPlot(){
 		do{
 			var pitchToDraw : Pitch? = nil
-		
-		if let pitch = lastDetectedPitch {
-			pitchToDraw = pitch
-		}else {
-			pitchToDraw = try Pitch(frequency: 0.0)
+			
+			//Check if a pitch was detected, if not puts a value of pitch in the graph
+			if let pitch = lastDetectedPitch {
+				pitchToDraw = pitch
+			}else {
+				pitchToDraw = try Pitch(frequency: 0.0)
 			}
-		
-		addBarToPitchGraph(pitch: pitchToDraw!)
-		lastDetectedPitch = nil
-		
+			
+			addBarToPitchGraph(pitch: pitchToDraw!)
+			lastDetectedPitch = nil
+			
 		} catch {
 			print(error)
 		}
 	}
 	
+	
+	/// Function that gets the ducument darectory of the project to save/read files
+	///
+	/// - Returns: path to the directory of the program
 	static func getDocumentsDirectory() -> URL {
 		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		let documentsDirectory = paths[0]
 		return documentsDirectory
 	}
 	
+	
+	/// Object that dismisses the keyboard
 	@objc func dismissKeyboard(){
 		self.view.endEditing(true)
 	}
 	
 	//MARK: Outlet Button Actions
+	
 	@IBAction func recordPress(_ sender: Any) {
+		//starts all the recordings and input receiving
 		setupAVSession()
 		
 		AudioKit.start()
@@ -235,26 +242,28 @@ class RecordViewController : UIViewController {
 			avAudioRecorder.record()
 		}
 		
+		//Disables the buttons
 		saveButton.isEnabled = false
 		recordButton.isEnabled = false
 		stopButton.isEnabled = true
 		
 		//setup the timer
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
-		
 	}
 	
 	@IBAction func stopPress(_ sender: Any) {
+		//Pauses the receiving of data and inputs
 		self.pitchEngine.stop()
-
-		avAudioRecorder.pause()
 		
+		avAudioRecorder.pause()
 		AudioKit.stop()
 		
+		//Invalidates the timer to stop the pitch update
 		if timer.isValid {
 			timer.invalidate()
 		}
 		
+		//re-enables the buttons
 		saveButton.isEnabled = true
 		recordButton.isEnabled = true
 		stopButton.isEnabled = false
@@ -264,7 +273,7 @@ class RecordViewController : UIViewController {
 		if avAudioRecorder != nil {
 			finishRecording(success: true)
 		}
-		
+		//returns to the list of recordings
 		self.navigationController?.popViewController(animated: true)
 	}
 }
@@ -286,7 +295,7 @@ extension RecordViewController : PitchEngineDelegate {
 
 //MARK: AVRecorder Delegate
 extension RecordViewController : AVAudioRecorderDelegate {
-
+	
 	func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
 		if !flag {
 			if avAudioRecorder != nil {
