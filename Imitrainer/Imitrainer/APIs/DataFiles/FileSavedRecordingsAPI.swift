@@ -21,13 +21,10 @@ class FileSavedRecordingsAPI : RecordingAPI {
 		do {
 			// Get the directory contents urls (including subfolders urls)
 			let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
-			print(directoryContents)
 			
 			// if you want to filter the directory contents you can do like this:
 			let mp3Files = directoryContents.filter{ $0.pathExtension == "m4a" }
-			print("m4a urls:",mp3Files)
 			let mp3FileNames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
-			print("m4a list:", mp3FileNames)
 			
 			
 			for count1 in 0..<mp3Files.count {

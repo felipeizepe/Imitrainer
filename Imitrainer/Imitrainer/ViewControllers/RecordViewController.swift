@@ -155,6 +155,23 @@ class RecordViewController : UIViewController {
 	func finishRecording(success: Bool) {
 		avAudioRecorder.stop()
 		avAudioRecorder = nil
+		
+		do{
+			
+			let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
+			
+			
+			try NSArray(array: pitchAudioView.meteringLevelsArray).write(to: url, atomically: false)
+			
+			
+		}catch {
+			print(error)
+		}
+		
+		
+		
+		
+		
 	}
 	
 	func addBarToPitchGraph(pitch : Pitch){
@@ -259,7 +276,7 @@ extension RecordViewController : PitchEngineDelegate {
 	}
 	
 	func pitchEngine(_ pitchEngine: PitchEngine, didReceiveError error: Error) {
-		print(error)
+		//print(error)
 	}
 	
 	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {
