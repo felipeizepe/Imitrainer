@@ -89,6 +89,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Recordings" id="5eq-zx-9Cm">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="24B-2V-Aij">
+                            <connections>
+                                <action selector="editClicked:" destination="BYZ-38-t0r" id="rFk-nS-JFJ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="K4e-4g-JGI">
                             <connections>
                                 <segue destination="bUu-Z2-aNX" kind="show" id="8cY-8S-LbT"/>

@@ -68,10 +68,55 @@ class ListViewController: UIViewController {
 
 	//MARK: Auxiliar Methods
 	
+	//MARK: Outlet actions
+	
+	@IBAction func editClicked(_ sender: Any) {
+		
+		if(self.recordListTableView.isEditing == true)
+		{
+			self.recordListTableView.isEditing = false
+			self.navigationItem.leftBarButtonItem?.title = "Edit"
+		}
+		else
+		{
+			self.recordListTableView.isEditing = true
+			self.navigationItem.leftBarButtonItem?.title = "Done"
+		}
+		
+	}
 }
 
 //MARK: TableView delegate extension
 extension ListViewController : UITableViewDelegate {
+	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+		let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+			// delete item at indexPath
+			do {
+				let fileManager = FileManager.default
+				let recording = self.recordingList![indexPath.row]
+				
+				self.recordingList!.remove(at: indexPath.row)
+				
+				try fileManager.removeItem(at: recording.infoData.audioFile.url)
+				
+				let pitchUrl = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
+				
+				try fileManager.removeItem(at: pitchUrl)
+				
+			}catch {
+				print(error)
+			}
+			
+			DispatchQueue.main.async {
+				self.recordListTableView.reloadData()
+				self.view.setNeedsDisplay()
+			}
+			
+			
+		}
+		
+		return [delete]
+	}
 	
 }
 
