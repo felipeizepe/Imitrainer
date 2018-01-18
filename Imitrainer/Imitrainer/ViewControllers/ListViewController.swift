@@ -88,34 +88,31 @@ class ListViewController: UIViewController {
 
 //MARK: TableView delegate extension
 extension ListViewController : UITableViewDelegate {
-	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-		let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-			// delete item at indexPath
-			do {
-				let fileManager = FileManager.default
-				let recording = self.recordingList![indexPath.row]
-				
+	
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == UITableViewCellEditingStyle.delete {
+
+			let recording = self.recordingList![indexPath.row]
+
+			//Retrieves the Recording list
+			SharedRecordingAPI.shared.deleteRecording(recording: recording, completion: { [unowned self] (success, message) in
+
 				self.recordingList!.remove(at: indexPath.row)
-				
-				try fileManager.removeItem(at: recording.infoData.audioFile.url)
-				
-				let pitchUrl = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
-				
-				try fileManager.removeItem(at: pitchUrl)
-				
-			}catch {
-				print(error)
-			}
-			
-			DispatchQueue.main.async {
-				self.recordListTableView.reloadData()
-				self.view.setNeedsDisplay()
-			}
-			
-			
+				self.recordListTableView.deleteRows(at: [indexPath], with: .automatic)
+
+			})
 		}
-		
-		return [delete]
+	}
+	
+	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+		if (self.recordListTableView.isEditing) {
+			return UITableViewCellEditingStyle.delete
+		}
+		return UITableViewCellEditingStyle.none
+	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.backgroundColor = ColorConstants.bgColor
 	}
 	
 }
@@ -139,6 +136,7 @@ extension ListViewController : UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		
 		performSegue(withIdentifier: "playRecordingSegue", sender: indexPath.row)
 	}
 	

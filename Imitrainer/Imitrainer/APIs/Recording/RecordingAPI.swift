@@ -27,4 +27,7 @@ protocol RecordingAPI {
 	/// - Parameter completion: method to be called after the completion of the retrival of the list, successfully or not
 	func getRecordings( completion: @escaping (_ success: Bool, _ message: String?, _ event: [Recording]?) -> Void)
 	
+	
+	func deleteRecording( recording: Recording, completion: @escaping (_ success: Bool, _ message: String?) -> Void)
+	
 }

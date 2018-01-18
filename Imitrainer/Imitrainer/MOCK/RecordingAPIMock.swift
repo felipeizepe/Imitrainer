@@ -9,6 +9,10 @@
 import Foundation
 
 class RecordingAPIMock : RecordingAPI {
+	func deleteRecording(recording: Recording, completion: @escaping (Bool, String?) -> Void) {
+		completion(false,"Cant delete from Mock")
+	}
+	
 	
 	
 	func getRecordings( completion: @escaping (_ success: Bool, _ message: String?, _ event: [Recording]?) -> Void){

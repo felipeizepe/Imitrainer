@@ -47,7 +47,22 @@ class FileSavedRecordingsAPI : RecordingAPI {
 		
 	}
 	
-	
+	func deleteRecording(recording: Recording, completion: @escaping (Bool, String?) -> Void) {
+		do {
+			let fileManager = FileManager.default
+			
+			try fileManager.removeItem(at: recording.infoData.audioFile.url)
+			
+			let pitchUrl = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
+			
+			try fileManager.removeItem(at: pitchUrl)
+			
+			completion(true,nil)
+			
+		}catch {
+			completion(false,error.localizedDescription)
+		}
+	}
 	
 	
 }
