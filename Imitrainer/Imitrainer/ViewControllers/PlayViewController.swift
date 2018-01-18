@@ -88,7 +88,7 @@ class PlayViewController : UIViewController {
 		
 		//Plot adaptation to the screen
 		plot.fadeout = true
-		plot.gain = 2.5
+		plot.gain = 5
 		audioPlotNew.addSubview(plot)
 		audioPlotNew.sendSubview(toBack: plot)
 		
@@ -236,9 +236,9 @@ class PlayViewController : UIViewController {
 	
 	@IBAction func listenClicked(_ sender: Any) {
 		listenButton.isEnabled = false
-		self.player.playAudioFile(recording.infoData.audioFile)
 		
 		startSignalRead()
+		self.player.playAudioFile(recording.infoData.audioFile)
 	}
 }
 
@@ -248,7 +248,7 @@ extension PlayViewController : PitchEngineDelegate {
 	}
 	
 	func pitchEngine(_ pitchEngine: PitchEngine, didReceiveError error: Error) {
-		print(error)
+//		print(error)
 	}
 	
 	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {

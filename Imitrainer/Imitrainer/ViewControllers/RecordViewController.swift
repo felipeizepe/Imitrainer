@@ -28,6 +28,9 @@ class RecordViewController : UIViewController {
 	@IBOutlet weak var recordButton: 	UIButton!
 	@IBOutlet weak var stopButton: 		UIButton!
 	
+	@IBOutlet weak var errorMssgName: UILabel!
+	
+	@IBOutlet weak var errorLabel: UILabel!
 	//MARK: Properties
 	
 	
@@ -128,7 +131,8 @@ class RecordViewController : UIViewController {
 		do {
 			try avRecordingSession.setActive(true)
 		} catch {
-			print("Can`t record!")
+			errorLabel.text = "Couldn't generate recording file"
+			errorLabel.isHidden = false
 		}
 	}
 	
@@ -230,6 +234,13 @@ class RecordViewController : UIViewController {
 	//MARK: Outlet Button Actions
 	
 	@IBAction func recordPress(_ sender: Any) {
+		
+		if recordinNameField.text == "" {
+			errorMssgName.isHidden = false
+			return
+		}
+		errorMssgName.isHidden = true
+		errorLabel.isHidden = true
 		//starts all the recordings and input receiving
 		setupAVSession()
 		
