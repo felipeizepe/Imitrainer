@@ -17,7 +17,18 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainScreen" translatesAutoresizingMaskIntoConstraints="NO" id="ndD-Sv-70x">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" red="0.031346224248409271" green="0.37062597274780273" blue="0.49565070867538452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ndD-Sv-70x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="6p4-rv-bsM"/>
+                            <constraint firstItem="ndD-Sv-70x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Gzt-Fa-90t"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ndD-Sv-70x" secondAttribute="trailing" id="M1b-4w-TOJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ndD-Sv-70x" secondAttribute="bottom" id="W25-8e-VCA"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -26,4 +37,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="MainScreen" width="360" height="640"/>
+    </resources>
 </document>

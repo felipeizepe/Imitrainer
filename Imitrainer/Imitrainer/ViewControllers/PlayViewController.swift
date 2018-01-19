@@ -43,7 +43,7 @@ class PlayViewController : UIViewController {
 	//Pitch engine properties
 	var pitchEngine : 			PitchEngine!
 	var lastDetectedPitch : Pitch?
-	var maxPitch = 500.0
+	var maxPitch = 700.0
 	var minPitch = 30.0
 	
 	
@@ -85,7 +85,7 @@ class PlayViewController : UIViewController {
 		plot.color = UIColor.white
 		plot.backgroundColor = ColorConstants.playRed
 		plot.setRollingHistoryLength(size)
-		
+
 		//Plot adaptation to the screen
 		plot.fadeout = true
 		plot.gain = 5

@@ -66,6 +66,7 @@ class RecordViewController : UIViewController {
 		//MARK: Audiokit microphone setup
 		self.microphone = AKMicrophone()
 		self.freqTracker = AKFrequencyTracker(microphone, hopSize: 10, peakCount: 500)
+		
 		self.freqSilence = AKBooster(freqTracker, gain: 0)
 		
 		setupMicrophonePlot()
