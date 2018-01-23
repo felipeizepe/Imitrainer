@@ -78,6 +78,11 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="h2y-VF-9SJ">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" red="0.98377699239304806" green="0.97414704841169386" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.031346224249999999" green="0.37062597269999997" blue="0.4956507087" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -101,6 +106,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="h2y-VF-9SJ" id="QTa-Ji-mze"/>
                         <outlet property="recordListTableView" destination="Lc0-uo-ioP" id="VgR-JY-AOy"/>
                         <segue destination="j8R-gP-8q3" kind="show" identifier="playRecordingSegue" id="IzX-Tf-Vru"/>
                     </connections>
@@ -182,18 +188,6 @@
                                 <color key="textColor" red="0.99300699299999995" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please insert a recording name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Aq-nTq">
-                                <rect key="frame" x="171.5" y="72.5" width="175" height="14.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" red="1" green="0.21559842131528739" blue="0.1971282617887814" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfe-zl-7sA">
-                                <rect key="frame" x="30" y="133" width="315" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.10457423278374323" blue="0.071098882744205616" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HK4-SJ-mP3">
                                 <rect key="frame" x="0.0" y="503.5" width="375" height="100"/>
                                 <subviews>
@@ -239,6 +233,22 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please insert a recording name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Aq-nTq">
+                                <rect key="frame" x="171.5" y="72.5" width="175" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.21559842131528739" blue="0.1971282617887814" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfe-zl-7sA">
+                                <rect key="frame" x="30" y="133" width="315" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.10457423278374323" blue="0.071098882744205616" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksH-Rk-MH5">
+                                <rect key="frame" x="169" y="231" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.031346224249999999" green="0.37062597269999997" blue="0.4956507087" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -290,6 +300,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="ksH-Rk-MH5" id="ddx-Fe-ygc"/>
                         <outlet property="errorLabel" destination="hfe-zl-7sA" id="oMK-Al-XMc"/>
                         <outlet property="errorMssgName" destination="uFD-Aq-nTq" id="wl4-M7-OR3"/>
                         <outlet property="graphMicPlot" destination="CF5-rf-zcT" id="e3E-0l-waV"/>
@@ -336,6 +347,12 @@
                             </view>
                             <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOt-dX-DUS" customClass="EZAudioPlot">
                                 <rect key="frame" x="0.0" y="150" width="375" height="159"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="MJp-ms-9qE">
+                                        <rect key="frame" x="169" y="61" width="37" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
                                 <color key="backgroundColor" red="0.32133483889999997" green="0.079883821310000006" blue="0.084089271719999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="375" id="CnQ-s8-CCH"/>
@@ -471,6 +488,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Play" id="2rp-XJ-2xM"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="MJp-ms-9qE" id="Vcc-uc-yuS"/>
                         <outlet property="audioPlotNew" destination="dQN-84-vrD" id="akc-jl-MS1"/>
                         <outlet property="audioPlotNewLeading" destination="PIG-w6-RcE" id="yIh-sd-dvp"/>
                         <outlet property="audioPlotOriginal" destination="fOt-dX-DUS" id="YU4-Q2-3zo"/>

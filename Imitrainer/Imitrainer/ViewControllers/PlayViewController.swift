@@ -37,6 +37,9 @@ class PlayViewController : UIViewController {
 	
 	@IBOutlet weak var recordButton: UIButton!
 	@IBOutlet weak var listenButton: UIButton!
+	
+	
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	//MARK: Properties
 	
 	var recording: Recording!
@@ -69,6 +72,10 @@ class PlayViewController : UIViewController {
 	//MAKR: Lifecycle Methods
 	
 	override func viewDidLoad() {
+		
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
+		
 		//Loads View basic layout properties
 		recordingNameLabel.text = recording.name
 		initialConstraintValue = audioPlotOriginalLeading.constant
@@ -89,6 +96,11 @@ class PlayViewController : UIViewController {
 		setupPitchGraph()
 		setupOriginalPitchGraph()
 		
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		self.activityIndicator.stopAnimating()
+		self.activityIndicator.isHidden = true
 	}
 	
 	//MARK: Auxiliary Methods
@@ -266,16 +278,27 @@ class PlayViewController : UIViewController {
 	
 	//MARK: Action Outlests
 	@IBAction func recordClicked(_ sender: Any) {
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
+		
 		recordButton.isEnabled = false
 		startSignalRead()
 		
+		self.activityIndicator.stopAnimating()
+		self.activityIndicator.isHidden = true
 	}
 	
 	@IBAction func listenClicked(_ sender: Any) {
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
+		
 		listenButton.isEnabled = false
 		
 		startSignalRead()
 		self.player.playAudioFile(recording.infoData.audioFile)
+		
+		self.activityIndicator.stopAnimating()
+		self.activityIndicator.isHidden = true
 	}
 }
 

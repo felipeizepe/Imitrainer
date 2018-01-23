@@ -13,6 +13,7 @@ class ListViewController: UIViewController {
 	
 	//MARK: Outles
 	@IBOutlet weak var recordListTableView: UITableView!
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	//MARK: Properties
 	
@@ -21,6 +22,8 @@ class ListViewController: UIViewController {
 	
 	//MARK: Applicaton Lifecycle
 	override func viewDidLoad() {
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
 		super.viewDidLoad()
 		self.view.isUserInteractionEnabled = false
 		// Do any additional setup after loading the view, typically from a nib.
@@ -49,6 +52,8 @@ class ListViewController: UIViewController {
 			DispatchQueue.main.async {
 				self.recordListTableView.reloadData()
 				self.view.isUserInteractionEnabled = true
+				self.activityIndicator.stopAnimating()
+				self.activityIndicator.isHidden = true
 			}
 			
 		})

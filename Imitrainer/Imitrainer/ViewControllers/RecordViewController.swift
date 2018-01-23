@@ -31,6 +31,9 @@ class RecordViewController : UIViewController {
 	@IBOutlet weak var errorMssgName: UILabel!
 	
 	@IBOutlet weak var errorLabel: UILabel!
+	
+	
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	//MARK: Properties
 	
 	//AudioKit properties
@@ -57,6 +60,8 @@ class RecordViewController : UIViewController {
 	
 	//MAKR: Lifecycle Methods
 	override func viewDidLoad() {
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
 		//Keyboard dismiss setup
 		let tap = UITapGestureRecognizer(target: self, action: (#selector(RecordViewController.dismissKeyboard)))
 		tap.cancelsTouchesInView = false
@@ -78,6 +83,7 @@ class RecordViewController : UIViewController {
 		//MARK: Setup AV session
 		saveButton.isEnabled = false
 		stopButton.isEnabled = false
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -85,6 +91,8 @@ class RecordViewController : UIViewController {
 		//Initial setup so that the audiokit read silence
 		AudioKit.output = self.freqSilence
 		
+		self.activityIndicator.stopAnimating()
+		self.activityIndicator.isHidden = true
 	}
 	
 	deinit {
@@ -295,6 +303,10 @@ class RecordViewController : UIViewController {
 			errorMssgName.isHidden = false
 			return
 		}
+	
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
+		
 		errorMssgName.isHidden = true
 		errorLabel.isHidden = true
 		//starts all the recordings and input receiving
@@ -317,6 +329,8 @@ class RecordViewController : UIViewController {
 		//setup the timer
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
 		
+		self.activityIndicator.stopAnimating()
+		self.activityIndicator.isHidden = true
 		
 	}
 	
