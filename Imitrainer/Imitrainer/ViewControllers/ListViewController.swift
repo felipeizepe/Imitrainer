@@ -37,7 +37,12 @@ class ListViewController: UIViewController {
 		
 		//Retrieves the Recording list
 		SharedRecordingAPI.shared.getRecordings(completion: { [unowned self] (success, message, recordings) in
-			self.recordingList = recordings
+			//Sorts the recordings by name
+			self.recordingList = recordings?.sorted {
+				return $0.name < $1.name
+				
+				
+			}
 			
 			//Updates the data and the views
 			
