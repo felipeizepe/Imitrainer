@@ -181,7 +181,7 @@ class PlayViewController : UIViewController {
 		self.pitchViewOriginal.meteringLevelBarInterItem = 1.0
 		self.pitchViewOriginal.meteringLevelBarCornerRadius = 1.0
 		self.pitchViewOriginal.audioVisualizationMode = .write
-		self.pitchViewOriginal.gradientStartColor = UIColor.white
+		self.pitchViewOriginal.gradientStartColor = UIColor.darkGray
 		self.pitchViewOriginal.gradientEndColor = UIColor.black
 		
 		
