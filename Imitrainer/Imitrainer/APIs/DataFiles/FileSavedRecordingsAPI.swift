@@ -14,6 +14,8 @@ class FileSavedRecordingsAPI : RecordingAPI {
 	
 	func getRecordings(completion: @escaping (Bool, String?, [Recording]?) -> Void) {
 		
+		EZAudioUtilities.setShouldExitOnCheckResultFail(false)
+		
 		var result = [Recording]()
 		
 		let documentsUrl = RecordViewController.getDocumentsDirectory()

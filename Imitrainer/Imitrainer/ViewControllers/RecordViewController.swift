@@ -33,7 +33,6 @@ class RecordViewController : UIViewController {
 	@IBOutlet weak var errorLabel: UILabel!
 	//MARK: Properties
 	
-	
 	//AudioKit properties
 	var microphone: 	AKMicrophone!
 	var freqTracker: 	AKFrequencyTracker!
@@ -45,6 +44,7 @@ class RecordViewController : UIViewController {
 		var lastDetectedPitch : Pitch?
 	var maxPitch = 500.0
 	var minPitch = 30.0
+	var maxNumberCount = 70
 
 	
 	//Timer to add a pitch every second
@@ -86,6 +86,38 @@ class RecordViewController : UIViewController {
 		AudioKit.output = self.freqSilence
 		
 	}
+	
+	deinit {
+		
+		if avAudioRecorder != nil {
+			if avAudioRecorder.isRecording {
+				stopRecording()
+			}
+			finishRecording(success: false)
+		}
+		
+	}
+	
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if avAudioRecorder != nil {
+			if avAudioRecorder.isRecording {
+				stopRecording()
+			}
+			finishRecording(success: false)
+		}
+	}
+	
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		if avAudioRecorder != nil {
+			if avAudioRecorder.isRecording {
+				stopRecording()
+			}
+			finishRecording(success: false)
+		}
+	}
+	
 	
 	//MARK: Auxiliary Methods
 	
@@ -160,6 +192,24 @@ class RecordViewController : UIViewController {
 		}
 	}
 	
+	func stopRecording()  {
+		//Pauses the receiving of data and inputs
+		self.pitchEngine.stop()
+		
+		avAudioRecorder.pause()
+		AudioKit.stop()
+		
+		//Invalidates the timer to stop the pitch update
+		if timer.isValid {
+			timer.invalidate()
+		}
+		
+		//re-enables the buttons
+		saveButton.isEnabled = true
+		recordButton.isEnabled = true
+		stopButton.isEnabled = false
+	}
+	
 	
 	/// Finishes the recording process and generates de m4a file with the sound
 	///
@@ -193,6 +243,11 @@ class RecordViewController : UIViewController {
 		let percent = value/maxPitch
 		
 		self.pitchAudioView.addMeteringLevel(Float(percent))
+		
+		if pitchAudioView.meteringLevelsArray.count > maxNumberCount {
+			stopRecording()
+		}
+		
 	}
 	
 	
@@ -261,24 +316,12 @@ class RecordViewController : UIViewController {
 		
 		//setup the timer
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
+		
+		
 	}
 	
 	@IBAction func stopPress(_ sender: Any) {
-		//Pauses the receiving of data and inputs
-		self.pitchEngine.stop()
-		
-		avAudioRecorder.pause()
-		AudioKit.stop()
-		
-		//Invalidates the timer to stop the pitch update
-		if timer.isValid {
-			timer.invalidate()
-		}
-		
-		//re-enables the buttons
-		saveButton.isEnabled = true
-		recordButton.isEnabled = true
-		stopButton.isEnabled = false
+		stopRecording()
 	}
 	
 	@IBAction func savePressed(_ sender: Any) {
