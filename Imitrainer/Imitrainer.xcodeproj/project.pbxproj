@@ -15,11 +15,9 @@
 		6ABD571C20079B14005BA35B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ABD571B20079B14005BA35B /* Assets.xcassets */; };
 		6ABD571F20079B14005BA35B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ABD571D20079B14005BA35B /* LaunchScreen.storyboard */; };
 		6ABD572A2007AD50005BA35B /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57292007AD50005BA35B /* ListViewCell.swift */; };
-		6ABD572D2007B28B005BA35B /* RecordDataMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD572C2007B28B005BA35B /* RecordDataMock.swift */; };
 		6ABD572F2007B2B5005BA35B /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD572E2007B2B5005BA35B /* Recording.swift */; };
 		6ABD57312007B38A005BA35B /* AudioInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57302007B38A005BA35B /* AudioInfo.swift */; };
 		6ABD57352007BE7F005BA35B /* RecordingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57342007BE7F005BA35B /* RecordingAPI.swift */; };
-		6ABD57372007BF2C005BA35B /* RecordingAPIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */; };
 		6ABFAFD12008F13200620DE0 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABFAFD02008F13200620DE0 /* PlayViewController.swift */; };
 		6ABFAFD42008FA1900620DE0 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABFAFD32008FA1900620DE0 /* ColorConstants.swift */; };
 		ED72E8D78A290D824FF309A9 /* Pods_Imitrainer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 622670F6BF620EAE0DE1C813 /* Pods_Imitrainer.framework */; };
@@ -38,11 +36,9 @@
 		6ABD571E20079B14005BA35B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6ABD572020079B14005BA35B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ABD57292007AD50005BA35B /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
-		6ABD572C2007B28B005BA35B /* RecordDataMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataMock.swift; sourceTree = "<group>"; };
 		6ABD572E2007B2B5005BA35B /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		6ABD57302007B38A005BA35B /* AudioInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInfo.swift; sourceTree = "<group>"; };
 		6ABD57342007BE7F005BA35B /* RecordingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAPI.swift; sourceTree = "<group>"; };
-		6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAPIMock.swift; sourceTree = "<group>"; };
 		6ABFAFD02008F13200620DE0 /* PlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 		6ABFAFD32008FA1900620DE0 /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		E07313653504C2211CC9E3E5 /* Pods-Imitrainer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imitrainer.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,7 +87,6 @@
 			children = (
 				6ABFAFD22008FA0800620DE0 /* Constants */,
 				6ABD57322007BE4C005BA35B /* APIs */,
-				6ABD572B2007B273005BA35B /* MOCK */,
 				6ABD57282007AD19005BA35B /* Data */,
 				6ABD57272007AD0D005BA35B /* ViewControllers */,
 				6ABD57262007AD04005BA35B /* View */,
@@ -129,15 +124,6 @@
 				6ABD57302007B38A005BA35B /* AudioInfo.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		6ABD572B2007B273005BA35B /* MOCK */ = {
-			isa = PBXGroup;
-			children = (
-				6ABD572C2007B28B005BA35B /* RecordDataMock.swift */,
-				6ABD57362007BF2C005BA35B /* RecordingAPIMock.swift */,
-			);
-			path = MOCK;
 			sourceTree = "<group>";
 		};
 		6ABD57322007BE4C005BA35B /* APIs */ = {
@@ -311,7 +297,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Imitrainer/Pods-Imitrainer-resources.sh\"\n\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/AudioKit.framework/fix-framework.sh\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -323,10 +309,8 @@
 			files = (
 				6ABD571720079B14005BA35B /* ListViewController.swift in Sources */,
 				6ABD572A2007AD50005BA35B /* ListViewCell.swift in Sources */,
-				6ABD57372007BF2C005BA35B /* RecordingAPIMock.swift in Sources */,
 				6A8197632008EAB700299094 /* RecordViewController.swift in Sources */,
 				6ABFAFD42008FA1900620DE0 /* ColorConstants.swift in Sources */,
-				6ABD572D2007B28B005BA35B /* RecordDataMock.swift in Sources */,
 				6ABD571520079B14005BA35B /* AppDelegate.swift in Sources */,
 				6ABFAFD12008F13200620DE0 /* PlayViewController.swift in Sources */,
 				6A1D1922200E3577004C196C /* FileSavedRecordingsAPI.swift in Sources */,
