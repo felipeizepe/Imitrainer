@@ -22,11 +22,12 @@ class ListViewController: UIViewController {
 	
 	//MARK: Applicaton Lifecycle
 	override func viewDidLoad() {
+		//Setup for the activity indicator
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
+		
 		super.viewDidLoad()
 		self.view.isUserInteractionEnabled = false
-		// Do any additional setup after loading the view, typically from a nib.
 		
 		//Sets-up the table view
 		recordListTableView.delegate = self
@@ -52,6 +53,8 @@ class ListViewController: UIViewController {
 			DispatchQueue.main.async {
 				self.recordListTableView.reloadData()
 				self.view.isUserInteractionEnabled = true
+				
+				//Stops the activity indicator
 				self.activityIndicator.stopAnimating()
 				self.activityIndicator.isHidden = true
 			}
@@ -146,7 +149,7 @@ extension ListViewController : UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
+		//Performs the segue to the play recording view based on the clicked cell
 		performSegue(withIdentifier: "playRecordingSegue", sender: indexPath.row)
 	}
 	

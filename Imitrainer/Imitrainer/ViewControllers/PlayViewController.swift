@@ -18,40 +18,25 @@ class PlayViewController : UIViewController {
 	
 	//MARK: Outlets
 	@IBOutlet weak var recordingNameLabel: UILabel!
-	
 	@IBOutlet weak var audioPlotOriginal: EZAudioPlot!
 	@IBOutlet weak var audioPlotNew: 			EZAudioPlot!
 	@IBOutlet weak var pitchViewOriginal: AudioVisualizationView!
 	@IBOutlet weak var pitchViewNew: 			AudioVisualizationView!
+	@IBOutlet weak var recordButton: UIButton!
+	@IBOutlet weak var listenButton: UIButton!
+	
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	//Outlets of constraints
 	@IBOutlet weak var plotOriginalWidth: NSLayoutConstraint!
 	
 	@IBOutlet weak var pitchViewOriginalWidth: NSLayoutConstraint!
 	
-	@IBOutlet weak var audioPlotNewLeading: NSLayoutConstraint!
-	@IBOutlet weak var audioPlotOriginalLeading: NSLayoutConstraint!
-	
-	@IBOutlet weak var pitchViewLeading: NSLayoutConstraint!
-	@IBOutlet weak var pitchViewOriginalLeading: NSLayoutConstraint!
-	
-	@IBOutlet weak var recordButton: UIButton!
-	@IBOutlet weak var listenButton: UIButton!
-	
-	
-	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	//MARK: Properties
-	
 	var recording: Recording!
-	var initialConstraintValue: CGFloat!
-	var pitchInitialConstraintValue: CGFloat!
 	//value found by testing the speed, it enables the view to move acordingly to
 	//accomodate for long audios
 	static let PIXEL_DRAW_SPEED_FACTOR = 36.5
-	
-	var newPlotMove: CGFloat = 0.0
-	var newPitchPlotMove: CGFloat = 0.0
-	
 	
 	//AudioKit properties
 	var microphone: 		AKMicrophone!
@@ -63,7 +48,7 @@ class PlayViewController : UIViewController {
 	//Pitch engine properties
 	var pitchEngine: 				PitchEngine!
 	var lastDetectedPitch: 	Pitch?
-	var maxPitch = 700.0
+	var maxPitch = 500.0
 	var minPitch = 30.0
 	weak var moveTimer: 		Timer!
 	
@@ -73,13 +58,12 @@ class PlayViewController : UIViewController {
 	
 	override func viewDidLoad() {
 		
+		//Sets up and starts the activity indicator
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
 		
 		//Loads View basic layout properties
 		recordingNameLabel.text = recording.name
-		initialConstraintValue = audioPlotOriginalLeading.constant
-		pitchInitialConstraintValue = pitchViewLeading.constant
 		
 		//MARK: Audiokit microphone setup
 		self.microphone = AKMicrophone()
@@ -91,7 +75,6 @@ class PlayViewController : UIViewController {
 		setupRecordPlot()
 		
 		//MARK: Pitch graph setup
-		
 		setupPitchListener()
 		setupPitchGraph()
 		setupOriginalPitchGraph()
@@ -99,6 +82,7 @@ class PlayViewController : UIViewController {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
+		//Stops the activity indicator
 		self.activityIndicator.stopAnimating()
 		self.activityIndicator.isHidden = true
 	}
@@ -130,9 +114,9 @@ class PlayViewController : UIViewController {
 	/// Sets up the plot of the graph of the recording file
 	func setupRecordPlot(){
 		
+		//Gets the waform data and the recording time from the file
 		let waveFormData = self.recording.infoData.audioFile.getWaveformData()
 		let time = self.recording.infoData.audioFile.duration
-
 		
 		//Adjust the plot of the audiofile to match the size of the screen
 		self.plotOriginalWidth.constant = CGFloat(time * PlayViewController.PIXEL_DRAW_SPEED_FACTOR)
@@ -154,6 +138,8 @@ class PlayViewController : UIViewController {
 	func setupPitchListener(){
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
+		FrequencyValidator.minimumFrequency = 10.0
+		FrequencyValidator.maximumFrequency = 400.0
 	}
 	
 	
@@ -196,13 +182,12 @@ class PlayViewController : UIViewController {
 		self.pitchViewOriginal.gradientStartColor = UIColor.darkGray
 		self.pitchViewOriginal.gradientEndColor = UIColor.black
 		
-		
+		//Loads the value of the recordings pitches to the pitch original graph
 		for value in recording.infoData.pitches {
 			pitchViewOriginal.addMeteringLevel(value)
 		}
 		
 	}
-	
 	
 	/// Uptades the pitch graph with a new value every milisecond
 	@objc func updatePitchPlot(){
@@ -212,7 +197,7 @@ class PlayViewController : UIViewController {
 			if let pitch = lastDetectedPitch {
 				pitchToDraw = pitch
 			}else {
-				pitchToDraw = try Pitch(frequency: 0.0)
+				pitchToDraw = try Pitch(frequency: 10.0)
 			}
 			
 			addBarToPitchGraph(pitch: pitchToDraw!)
@@ -220,20 +205,10 @@ class PlayViewController : UIViewController {
 			
 		} catch {
 			print(error)
+			self.pitchViewNew.addMeteringLevel(10.0)
 		}
 		
 		
-	}
-	
-	@objc func updatePlotMovement(){
-		let rate = CGFloat(PlayViewController.PIXEL_DRAW_SPEED_FACTOR)
-		//TODO: mover a taxa para outro timer com atualizacao menor para ser mais fluido e
-		//ajustar a taxa de pixels por segundo
-		if newPlotMove > audioPlotNew.frame.width + rate {
-			audioPlotOriginalLeading.constant -= rate/20
-		}
-		
-		newPlotMove += rate/20
 	}
 	
 	
@@ -245,7 +220,6 @@ class PlayViewController : UIViewController {
 		
 		if timer.isValid {
 			timer.invalidate()
-			newPitchPlotMove = 0.0
 		}
 		
 		listenButton.isEnabled = true
@@ -255,9 +229,6 @@ class PlayViewController : UIViewController {
 	
 	/// Functios that start the signal reading and recording
 	func startSignalRead(){
-		
-		audioPlotOriginalLeading.constant = initialConstraintValue
-		pitchViewOriginalLeading.constant = pitchInitialConstraintValue
 		
 		self.microphonePlot.resetHistoryBuffers()
 		self.pitchViewNew.reset()
@@ -308,11 +279,11 @@ extension PlayViewController : PitchEngineDelegate {
 	}
 	
 	func pitchEngine(_ pitchEngine: PitchEngine, didReceiveError error: Error) {
-//		print(error)
+
 	}
 	
 	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {
-		print("TRESH: \(pitchEngine.levelThreshold)")
+		
 	}
 	
 }

@@ -60,6 +60,7 @@ class RecordViewController : UIViewController {
 	
 	//MAKR: Lifecycle Methods
 	override func viewDidLoad() {
+		//Setup and starts the actibity indicator
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
 		//Keyboard dismiss setup
@@ -71,7 +72,6 @@ class RecordViewController : UIViewController {
 		//MARK: Audiokit microphone setup
 		self.microphone = AKMicrophone()
 		self.freqTracker = AKFrequencyTracker(microphone, hopSize: 10, peakCount: 500)
-		
 		self.freqSilence = AKBooster(freqTracker, gain: 0)
 		
 		setupMicrophonePlot()
@@ -88,7 +88,7 @@ class RecordViewController : UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		//MARK: AudioKit output setup
-		//Initial setup so that the audiokit read silence
+		//Initial setup so that the audiokit is set at silence level
 		AudioKit.output = self.freqSilence
 		
 		self.activityIndicator.stopAnimating()
@@ -96,7 +96,7 @@ class RecordViewController : UIViewController {
 	}
 	
 	deinit {
-		
+		//Checks if the recording is still ongoin so the file wont be currupted
 		if avAudioRecorder != nil {
 			if avAudioRecorder.isRecording {
 				stopRecording()
@@ -108,6 +108,7 @@ class RecordViewController : UIViewController {
 	
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		//Checks if the recording is still ongoin so the file wont be currupted
 		if avAudioRecorder != nil {
 			if avAudioRecorder.isRecording {
 				stopRecording()
@@ -118,6 +119,7 @@ class RecordViewController : UIViewController {
 	
 	
 	override func viewWillDisappear(_ animated: Bool) {
+		//Checks if the recording is still ongoin so the file wont be currupted
 		if avAudioRecorder != nil {
 			if avAudioRecorder.isRecording {
 				stopRecording()
@@ -150,13 +152,14 @@ class RecordViewController : UIViewController {
 	func setupPitchListener(){
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
+		FrequencyValidator.minimumFrequency = 10.0
+		FrequencyValidator.maximumFrequency = 400.0
 	}
 	
 	
 	
 	/// Configures the pitch graph layout
 	func setupPitchGraph(){
-		
 		self.pitchAudioView.meteringLevelBarWidth = 2.5
 		self.pitchAudioView.meteringLevelBarInterItem = 1.0
 		self.pitchAudioView.meteringLevelBarCornerRadius = 1.0
@@ -200,6 +203,8 @@ class RecordViewController : UIViewController {
 		}
 	}
 	
+	
+	/// Stops the current recording
 	func stopRecording()  {
 		//Pauses the receiving of data and inputs
 		self.pitchEngine.stop()
@@ -226,7 +231,7 @@ class RecordViewController : UIViewController {
 		avAudioRecorder.stop()
 		avAudioRecorder = nil
 		
-		//Writes the pith info to a file
+		//Writes the pitch array info to a file
 		let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
 		NSArray(array: pitchAudioView.meteringLevelsArray).write(to: url, atomically: false)
 		
@@ -252,6 +257,8 @@ class RecordViewController : UIViewController {
 		
 		self.pitchAudioView.addMeteringLevel(Float(percent))
 		
+		//Restricts the number of pitch values to be recorded so that they don`t go off the screen on the play screen
+		//TODO: adjust the pitch graph movement and recording to enable longer recording sessions
 		if pitchAudioView.meteringLevelsArray.count > maxNumberCount {
 			stopRecording()
 		}
@@ -268,7 +275,7 @@ class RecordViewController : UIViewController {
 			if let pitch = lastDetectedPitch {
 				pitchToDraw = pitch
 			}else {
-				pitchToDraw = try Pitch(frequency: 0.0)
+				pitchToDraw = try Pitch(frequency: 10.0)
 			}
 			
 			addBarToPitchGraph(pitch: pitchToDraw!)
@@ -276,6 +283,7 @@ class RecordViewController : UIViewController {
 			
 		} catch {
 			print(error)
+			self.pitchAudioView.addMeteringLevel(10.0)
 		}
 	}
 	
@@ -299,19 +307,22 @@ class RecordViewController : UIViewController {
 	
 	@IBAction func recordPress(_ sender: Any) {
 		
+		//Checks if a name for the recording has been typed
 		if recordinNameField.text == "" {
 			errorMssgName.isHidden = false
 			return
 		}
 	
+		//Sets up and starts the activity indicator
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
 		
+		//Cleans the errors if the record press was succesful
 		errorMssgName.isHidden = true
 		errorLabel.isHidden = true
+		
 		//starts all the recordings and input receiving
 		setupAVSession()
-		
 		AudioKit.start()
 		self.pitchEngine.start()
 		
@@ -329,6 +340,7 @@ class RecordViewController : UIViewController {
 		//setup the timer
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
 		
+		//Deactivates de activity indicator
 		self.activityIndicator.stopAnimating()
 		self.activityIndicator.isHidden = true
 		
@@ -354,11 +366,11 @@ extension RecordViewController : PitchEngineDelegate {
 	}
 	
 	func pitchEngine(_ pitchEngine: PitchEngine, didReceiveError error: Error) {
-		//print(error)
+		//Function that recieves errors of pitch readings, it is called constantly
 	}
 	
 	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {
-		print("TRESH: \(pitchEngine.levelThreshold)")
+		
 	}
 }
 
@@ -366,6 +378,7 @@ extension RecordViewController : PitchEngineDelegate {
 extension RecordViewController : AVAudioRecorderDelegate {
 	
 	func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+		//Cloeses the recording if it was successful
 		if !flag {
 			if avAudioRecorder != nil {
 				finishRecording(success: true)

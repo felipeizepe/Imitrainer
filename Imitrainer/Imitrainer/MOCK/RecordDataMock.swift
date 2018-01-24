@@ -35,33 +35,30 @@ class RecordDataMock {
 			print("error writing to url:", fileURL, error)
 		}
 		
-		let settings =  [AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue,
-										 AVEncoderBitRateKey: 32,
-										 AVNumberOfChannelsKey: 2,
-										 AVSampleRateKey: 44100.0] as [String : Any]
+		//		let settings =  [AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue,
+		//										 AVEncoderBitRateKey: 32,
+		//										 AVNumberOfChannelsKey: 2,
+		//										 AVSampleRateKey: 44100.0] as [String : Any]
 		
-		do{
-			let audFile = EZAudioFile(url: fileURL)!
-			
-			let freqs = [Float(2.0), Float(3.0), Float(4.0), Float(5.0)]
-			let pitchs = [Float(20.0), Float(30.0), Float(40.0), Float(50.0)]
-			
-			let ai1 = AudioInfo(recordedAudioFile: audFile, recordedFrequencies: freqs, recordedPitches: pitchs)
-			
-			let ai2 = AudioInfo(recordedAudioFile: audFile, recordedFrequencies: pitchs, recordedPitches: freqs)
-			
-			let r1 = Recording(recordingName: "Name1", recordedInfo: ai1)
-			let r2 = Recording(recordingName: "Name2", recordedInfo: ai2)
-			let r3 = Recording(recordingName: "N3", recordedInfo: ai1)
-			
-			list.append(r1)
-			list.append(r2)
-			list.append(r3)
-			
-		}catch {
-			print("ERROR GENERATING THE MOCK FILE")
-			return list
-		}
+		
+		let audFile = EZAudioFile(url: fileURL)!
+		
+		let freqs = [Float(2.0), Float(3.0), Float(4.0), Float(5.0)]
+		let pitchs = [Float(20.0), Float(30.0), Float(40.0), Float(50.0)]
+		
+		let ai1 = AudioInfo(recordedAudioFile: audFile, recordedFrequencies: freqs, recordedPitches: pitchs)
+		
+		let ai2 = AudioInfo(recordedAudioFile: audFile, recordedFrequencies: pitchs, recordedPitches: freqs)
+		
+		let r1 = Recording(recordingName: "Name1", recordedInfo: ai1)
+		let r2 = Recording(recordingName: "Name2", recordedInfo: ai2)
+		let r3 = Recording(recordingName: "N3", recordedInfo: ai1)
+		
+		list.append(r1)
+		list.append(r2)
+		list.append(r3)
+		
+		
 		return list
 	}
 	

@@ -490,14 +490,10 @@
                     <connections>
                         <outlet property="activityIndicator" destination="MJp-ms-9qE" id="Vcc-uc-yuS"/>
                         <outlet property="audioPlotNew" destination="dQN-84-vrD" id="akc-jl-MS1"/>
-                        <outlet property="audioPlotNewLeading" destination="PIG-w6-RcE" id="yIh-sd-dvp"/>
                         <outlet property="audioPlotOriginal" destination="fOt-dX-DUS" id="YU4-Q2-3zo"/>
-                        <outlet property="audioPlotOriginalLeading" destination="7j4-Oy-xs1" id="c2i-Yb-Z3C"/>
                         <outlet property="listenButton" destination="DTg-hq-52E" id="4bu-BE-sEY"/>
-                        <outlet property="pitchViewLeading" destination="Drz-px-9ZO" id="U8J-v2-6RT"/>
                         <outlet property="pitchViewNew" destination="nR5-EI-oYZ" id="VkI-V5-Z47"/>
                         <outlet property="pitchViewOriginal" destination="QvZ-vt-PKc" id="dg0-Hr-8Md"/>
-                        <outlet property="pitchViewOriginalLeading" destination="qd6-Se-u7j" id="dRp-I8-gg8"/>
                         <outlet property="pitchViewOriginalWidth" destination="Uv0-Ha-v6G" id="tc2-c3-ilA"/>
                         <outlet property="plotOriginalWidth" destination="CnQ-s8-CCH" id="wYd-uj-75H"/>
                         <outlet property="recordButton" destination="nCd-kA-QJC" id="OTE-1F-SMG"/>

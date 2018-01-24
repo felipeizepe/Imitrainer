@@ -31,8 +31,8 @@ protocol RecordingAPI {
 	/// Deletes the given recornding from the files on the system
 	///
 	/// - Parameters:
-	///   - recording: recording to be deletes
-	///   - completion: completion method to be called after the files are deleted
+	///   - recording: recording to be deleted
+	///   - completion: completion method to be called after the file is deleted
 	func deleteRecording( recording: Recording, completion: @escaping (_ success: Bool, _ message: String?) -> Void)
 	
 }
