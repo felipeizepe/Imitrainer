@@ -34,6 +34,9 @@ class RecordViewController : UIViewController {
 	
 	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	
+	
+	@IBOutlet weak var countdownLabel: UILabel!
 	//MARK: Properties
 	
 	//AudioKit properties
@@ -45,7 +48,7 @@ class RecordViewController : UIViewController {
 	//Pitch engine properties
 	var pitchEngine : 				PitchEngine!
 		var lastDetectedPitch : Pitch?
-	var maxPitch = 500.0
+	var maxPitch = 700.0
 	var minPitch = 30.0
 	var maxNumberCount = 70
 
@@ -153,7 +156,7 @@ class RecordViewController : UIViewController {
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
 		FrequencyValidator.minimumFrequency = 10.0
-		FrequencyValidator.maximumFrequency = 400.0
+		FrequencyValidator.maximumFrequency = 600.0
 	}
 	
 	
@@ -248,7 +251,7 @@ class RecordViewController : UIViewController {
 		var value : Double
 		
 		if pitch.frequency > self.maxPitch {
-			value = self.maxPitch
+			value = FrequencyValidator.maximumFrequency
 		}else {
 			value = pitch.frequency
 		}
@@ -297,29 +300,7 @@ class RecordViewController : UIViewController {
 		return documentsDirectory
 	}
 	
-	
-	/// Object that dismisses the keyboard
-	@objc func dismissKeyboard(){
-		self.view.endEditing(true)
-	}
-	
-	//MARK: Outlet Button Actions
-	
-	@IBAction func recordPress(_ sender: Any) {
-		
-		//Checks if a name for the recording has been typed
-		if recordinNameField.text == "" {
-			errorMssgName.isHidden = false
-			return
-		}
-	
-		//Sets up and starts the activity indicator
-		activityIndicator.isHidden = false
-		activityIndicator.startAnimating()
-		
-		//Cleans the errors if the record press was succesful
-		errorMssgName.isHidden = true
-		errorLabel.isHidden = true
+	func startDelayedRecording(){
 		
 		//starts all the recordings and input receiving
 		setupAVSession()
@@ -340,14 +321,58 @@ class RecordViewController : UIViewController {
 		//setup the timer
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
 		
-		//Deactivates de activity indicator
-		self.activityIndicator.stopAnimating()
-		self.activityIndicator.isHidden = true
+		countdownLabel.isHidden = true
+		
+	}
+	
+	
+	/// Object that dismisses the keyboard
+	@objc func dismissKeyboard(){
+		self.view.endEditing(true)
+	}
+	
+	//MARK: Outlet Button Actions
+	
+	@IBAction func recordPress(_ sender: Any) {
+		
+		//Checks if a name for the recording has been typed
+		if recordinNameField.text == "" {
+			errorMssgName.isHidden = false
+			return
+		}
+	
+		//Cleans the errors if the record press was succesful
+		errorMssgName.isHidden = true
+		errorLabel.isHidden = true
+		
+		//Starts the countdown to the recording
+		countdownLabel.isHidden = false
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+			self.countdownLabel.text = "3"
+			
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+				self.countdownLabel.text = "2"
+				
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+					self.countdownLabel.text = "1"
+					
+					DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+						self.startDelayedRecording()
+					})
+					
+				})
+				
+			})
+			
+		})
+		
 		
 	}
 	
 	@IBAction func stopPress(_ sender: Any) {
 		stopRecording()
+		countdownLabel.text = "Count"
 	}
 	
 	@IBAction func savePressed(_ sender: Any) {

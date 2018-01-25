@@ -27,6 +27,9 @@ class PlayViewController : UIViewController {
 	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
+	@IBOutlet weak var countdownLabel: UILabel!
+	
+	
 	//Outlets of constraints
 	@IBOutlet weak var plotOriginalWidth: NSLayoutConstraint!
 	
@@ -48,8 +51,8 @@ class PlayViewController : UIViewController {
 	//Pitch engine properties
 	var pitchEngine: 				PitchEngine!
 	var lastDetectedPitch: 	Pitch?
-	var maxPitch = 500.0
-	var minPitch = 30.0
+	var maxPitch = 700.0
+	var minPitch = 10.1
 	weak var moveTimer: 		Timer!
 	
 	weak var timer: Timer!
@@ -139,7 +142,7 @@ class PlayViewController : UIViewController {
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
 		FrequencyValidator.minimumFrequency = 10.0
-		FrequencyValidator.maximumFrequency = 400.0
+		FrequencyValidator.maximumFrequency = 600.0
 	}
 	
 	
@@ -162,7 +165,7 @@ class PlayViewController : UIViewController {
 		var value : Double
 		
 		if pitch.frequency > self.maxPitch {
-			value = self.maxPitch
+			value = FrequencyValidator.maximumFrequency
 		}else {
 			value = pitch.frequency
 		}
@@ -179,7 +182,7 @@ class PlayViewController : UIViewController {
 		self.pitchViewOriginal.meteringLevelBarInterItem = 1.0
 		self.pitchViewOriginal.meteringLevelBarCornerRadius = 1.0
 		self.pitchViewOriginal.audioVisualizationMode = .write
-		self.pitchViewOriginal.gradientStartColor = UIColor.darkGray
+		self.pitchViewOriginal.gradientStartColor = UIColor.white
 		self.pitchViewOriginal.gradientEndColor = UIColor.black
 		
 		//Loads the value of the recordings pitches to the pitch original graph
@@ -197,7 +200,7 @@ class PlayViewController : UIViewController {
 			if let pitch = lastDetectedPitch {
 				pitchToDraw = pitch
 			}else {
-				pitchToDraw = try Pitch(frequency: 10.0)
+				pitchToDraw = try Pitch(frequency: 10.1)
 			}
 			
 			addBarToPitchGraph(pitch: pitchToDraw!)
@@ -221,6 +224,8 @@ class PlayViewController : UIViewController {
 		if timer.isValid {
 			timer.invalidate()
 		}
+		
+		countdownLabel.text = "Count"
 		
 		listenButton.isEnabled = true
 		recordButton.isEnabled = true
@@ -249,14 +254,31 @@ class PlayViewController : UIViewController {
 	
 	//MARK: Action Outlests
 	@IBAction func recordClicked(_ sender: Any) {
-		activityIndicator.isHidden = false
-		activityIndicator.startAnimating()
 		
 		recordButton.isEnabled = false
-		startSignalRead()
 		
-		self.activityIndicator.stopAnimating()
-		self.activityIndicator.isHidden = true
+		countdownLabel.isHidden = false
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+			self.countdownLabel.text = "3"
+			
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+				self.countdownLabel.text = "2"
+				
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+					self.countdownLabel.text = "1"
+					
+					DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+						self.startSignalRead()
+						self.countdownLabel.isHidden = true
+					})
+					
+				})
+				
+			})
+			
+		})
+		
 	}
 	
 	@IBAction func listenClicked(_ sender: Any) {
