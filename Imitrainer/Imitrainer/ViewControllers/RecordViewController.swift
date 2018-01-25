@@ -49,8 +49,9 @@ class RecordViewController : UIViewController {
 	var pitchEngine : 				PitchEngine!
 		var lastDetectedPitch : Pitch?
 	var maxPitch = 700.0
-	var minPitch = 30.0
+	var minPitch = 20.0
 	var maxNumberCount = 70
+	var pitchesArray: [Float]!
 
 	
 	//Timer to add a pitch every second
@@ -93,6 +94,8 @@ class RecordViewController : UIViewController {
 		//MARK: AudioKit output setup
 		//Initial setup so that the audiokit is set at silence level
 		AudioKit.output = self.freqSilence
+		
+		pitchesArray = [Float]()
 		
 		self.activityIndicator.stopAnimating()
 		self.activityIndicator.isHidden = true
@@ -155,7 +158,7 @@ class RecordViewController : UIViewController {
 	func setupPitchListener(){
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
-		FrequencyValidator.minimumFrequency = 10.0
+		FrequencyValidator.minimumFrequency = 20.0
 		FrequencyValidator.maximumFrequency = 600.0
 	}
 	
@@ -236,7 +239,7 @@ class RecordViewController : UIViewController {
 		
 		//Writes the pitch array info to a file
 		let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
-		NSArray(array: pitchAudioView.meteringLevelsArray).write(to: url, atomically: false)
+		NSArray(array: pitchesArray).write(to: url, atomically: false)
 		
 	}
 	
@@ -259,6 +262,7 @@ class RecordViewController : UIViewController {
 		let percent = value/maxPitch
 		
 		self.pitchAudioView.addMeteringLevel(Float(percent))
+		pitchesArray.append(Float(percent))
 		
 		//Restricts the number of pitch values to be recorded so that they don`t go off the screen on the play screen
 		//TODO: adjust the pitch graph movement and recording to enable longer recording sessions
@@ -278,7 +282,7 @@ class RecordViewController : UIViewController {
 			if let pitch = lastDetectedPitch {
 				pitchToDraw = pitch
 			}else {
-				pitchToDraw = try Pitch(frequency: 10.0)
+				pitchToDraw = try Pitch(frequency: 20.1)
 			}
 			
 			addBarToPitchGraph(pitch: pitchToDraw!)
@@ -286,7 +290,12 @@ class RecordViewController : UIViewController {
 			
 		} catch {
 			print(error)
-			self.pitchAudioView.addMeteringLevel(10.0)
+			
+			let percent = Float(20.1/FrequencyValidator.maximumFrequency)
+			
+			self.pitchAudioView.addMeteringLevel(percent)
+			pitchesArray.append(percent)
+			
 		}
 	}
 	

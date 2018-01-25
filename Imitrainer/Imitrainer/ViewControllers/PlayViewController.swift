@@ -52,7 +52,7 @@ class PlayViewController : UIViewController {
 	var pitchEngine: 				PitchEngine!
 	var lastDetectedPitch: 	Pitch?
 	var maxPitch = 700.0
-	var minPitch = 10.1
+	var minPitch = 20.0
 	weak var moveTimer: 		Timer!
 	
 	weak var timer: Timer!
@@ -141,7 +141,7 @@ class PlayViewController : UIViewController {
 	func setupPitchListener(){
 		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
 		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
-		FrequencyValidator.minimumFrequency = 10.0
+		FrequencyValidator.minimumFrequency = 20.0
 		FrequencyValidator.maximumFrequency = 600.0
 	}
 	
@@ -178,6 +178,7 @@ class PlayViewController : UIViewController {
 	
 	//Sets up the pitch graph for the received audio file
 	func setupOriginalPitchGraph(){
+		self.pitchViewOriginal.reset()
 		self.pitchViewOriginal.meteringLevelBarWidth = 2.5
 		self.pitchViewOriginal.meteringLevelBarInterItem = 1.0
 		self.pitchViewOriginal.meteringLevelBarCornerRadius = 1.0
@@ -189,7 +190,6 @@ class PlayViewController : UIViewController {
 		for value in recording.infoData.pitches {
 			pitchViewOriginal.addMeteringLevel(value)
 		}
-		
 	}
 	
 	/// Uptades the pitch graph with a new value every milisecond
@@ -200,7 +200,7 @@ class PlayViewController : UIViewController {
 			if let pitch = lastDetectedPitch {
 				pitchToDraw = pitch
 			}else {
-				pitchToDraw = try Pitch(frequency: 10.1)
+				pitchToDraw = try Pitch(frequency: 20.1)
 			}
 			
 			addBarToPitchGraph(pitch: pitchToDraw!)
@@ -208,7 +208,7 @@ class PlayViewController : UIViewController {
 			
 		} catch {
 			print(error)
-			self.pitchViewNew.addMeteringLevel(10.0)
+			self.pitchViewNew.addMeteringLevel(Float(20.1/FrequencyValidator.maximumFrequency))
 		}
 		
 		
