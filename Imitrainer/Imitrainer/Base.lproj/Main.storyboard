@@ -38,7 +38,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="50" sectionFooterHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="Lc0-uo-ioP">
-                                <rect key="frame" x="0.0" y="10" width="375" height="657"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                                 <color key="backgroundColor" red="0.031346224249999999" green="0.37062597269999997" blue="0.4956507087" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" red="0.031346224249999999" green="0.37062597269999997" blue="0.4956507087" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.031346224248409271" green="0.37062597274780273" blue="0.49565070867538452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -83,13 +83,20 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" red="0.98377699239304806" green="0.97414704841169386" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <searchBar contentMode="redraw" placeholder="Search Recording" translatesAutoresizingMaskIntoConstraints="NO" id="2vM-m8-Cjc">
+                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="0.031346224249999999" green="0.37062597269999997" blue="0.4956507087" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Lc0-uo-ioP" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="10" id="IUO-ls-0CV"/>
+                            <constraint firstItem="Lc0-uo-ioP" firstAttribute="top" secondItem="2vM-m8-Cjc" secondAttribute="bottom" id="IUO-ls-0CV"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Lc0-uo-ioP" secondAttribute="trailing" id="P2j-NQ-oe8"/>
+                            <constraint firstItem="2vM-m8-Cjc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="PXA-Vc-y0k"/>
                             <constraint firstItem="Lc0-uo-ioP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bHH-6k-Tn4"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Lc0-uo-ioP" secondAttribute="bottom" id="e5w-6l-EkV"/>
+                            <constraint firstItem="2vM-m8-Cjc" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ffn-02-qgM"/>
+                            <constraint firstItem="2vM-m8-Cjc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fs7-dK-tPg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -108,6 +115,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="h2y-VF-9SJ" id="QTa-Ji-mze"/>
                         <outlet property="recordListTableView" destination="Lc0-uo-ioP" id="VgR-JY-AOy"/>
+                        <outlet property="searchBar" destination="2vM-m8-Cjc" id="hZd-2P-a9S"/>
                         <segue destination="j8R-gP-8q3" kind="show" identifier="playRecordingSegue" id="IzX-Tf-Vru"/>
                     </connections>
                 </viewController>
@@ -170,7 +178,7 @@
                                 <rect key="frame" x="157" y="89" width="203" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LUv-ml-rsu">
                                 <rect key="frame" x="0.0" y="369" width="375" height="60"/>

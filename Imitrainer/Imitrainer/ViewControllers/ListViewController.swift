@@ -15,13 +15,20 @@ class ListViewController: UIViewController {
 	@IBOutlet weak var recordListTableView: UITableView!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
+	@IBOutlet weak var searchBar: UISearchBar!
 	//MARK: Properties
 	
-	var recordingList : [Recording]?
+	var recordingList: [Recording]?
+	var searchResults: [Recording]!
+	var searchIsActive = false
 	
 	
 	//MARK: Applicaton Lifecycle
 	override func viewDidLoad() {
+		navigationController?.navigationBar.prefersLargeTitles = false
+		
+		searchResults = [Recording]()
+		
 		//Setup for the activity indicator
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
@@ -32,6 +39,24 @@ class ListViewController: UIViewController {
 		//Sets-up the table view
 		recordListTableView.delegate = self
 		recordListTableView.dataSource = self
+		
+		//Setup sarch bar
+		navigationItem.hidesSearchBarWhenScrolling = false
+		
+		
+		navigationController?.navigationBar.isTranslucent = false
+		navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+		navigationController?.navigationBar.shadowImage = UIImage()
+		
+		searchBar.barStyle = .default
+		searchBar.isTranslucent = false
+		searchBar.backgroundImage = UIImage()
+		searchBar.delegate = self
+		searchBar.showsCancelButton = false
+		
+		let tap = UITapGestureRecognizer(target: self, action: (#selector(ListViewController.dismissKeyboard)))
+		tap.cancelsTouchesInView = false
+		self.view.addGestureRecognizer(tap)
 		
 		
 		
@@ -80,6 +105,43 @@ class ListViewController: UIViewController {
 
 
 	//MARK: Auxiliar Methods
+	/// Object that dismisses the keyboard
+	@objc func dismissKeyboard(){
+		self.view.endEditing(true)
+	}
+	
+	
+	func search(recordingName: String){
+		//Setup for the activity indicator
+		activityIndicator.isHidden = false
+		activityIndicator.startAnimating()
+		
+		
+		self.searchIsActive = true
+		self.searchBar.showsCancelButton = true
+		
+		searchResults.removeAll()
+		
+		if recordingList == nil {
+			return
+		}
+		
+		for recording in recordingList! {
+			if recording.name.contains(recordingName) {
+				searchResults.append(recording)
+			}
+		}
+		
+		DispatchQueue.main.async {
+			self.recordListTableView.reloadData()
+			self.view.isUserInteractionEnabled = true
+			
+			//Stops the activity indicator
+			self.activityIndicator.stopAnimating()
+			self.activityIndicator.isHidden = true
+		}
+		
+	}
 	
 	//MARK: Outlet actions
 	
@@ -134,13 +196,23 @@ extension ListViewController : UITableViewDelegate {
 extension ListViewController : UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return recordingList?.count ?? 0
+		
+		if !searchIsActive {
+			return recordingList?.count ?? 0
+		}
+			return searchResults.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "listViewCell", for: indexPath) as! ListViewCell
 	
-		let record = recordingList![indexPath.row]
+		let record: Recording
+		
+		if !searchIsActive {
+			record = recordingList![indexPath.row]
+		}else{
+			record = searchResults[indexPath.row]
+		}
 		
 		cell.recordNameLabel.text = record.name
 		
@@ -152,6 +224,45 @@ extension ListViewController : UITableViewDataSource {
 		//Performs the segue to the play recording view based on the clicked cell
 		performSegue(withIdentifier: "playRecordingSegue", sender: indexPath.row)
 	}
+	
+}
+
+//MARK: SearBar extensions
+
+extension ListViewController: UISearchBarDelegate {
+	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+		searchIsActive = true
+	}
+	
+	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+		searchIsActive = false
+	}
+	
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		searchIsActive = false
+		
+		searchBar.text = nil
+		searchBar.resignFirstResponder()
+		recordListTableView.resignFirstResponder()
+		self.searchBar.showsCancelButton = false
+		recordListTableView.reloadData()
+		
+	}
+	
+	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+		return true
+	}
+	
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+		
+		
+		
+		self.searchIsActive = true;
+		self.searchBar.showsCancelButton = true
+		
+		self.search(recordingName: searchText)
+	}
+
 	
 }
 
