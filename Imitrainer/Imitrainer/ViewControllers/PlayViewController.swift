@@ -30,6 +30,7 @@ class PlayViewController : UIViewController {
 	@IBOutlet weak var countdownLabel: UILabel!
 	
 	
+	@IBOutlet weak var volumeSlider: UISlider!
 	//Outlets of constraints
 	@IBOutlet weak var plotOriginalWidth: NSLayoutConstraint!
 	
@@ -293,6 +294,13 @@ class PlayViewController : UIViewController {
 		self.activityIndicator.stopAnimating()
 		self.activityIndicator.isHidden = true
 	}
+	
+	@IBAction func changeVolume(_ sender: Any) {
+		
+		player.volume = volumeSlider.value
+		
+	}
+	
 }
 
 extension PlayViewController : PitchEngineDelegate {

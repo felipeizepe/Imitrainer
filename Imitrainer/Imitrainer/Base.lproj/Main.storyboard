@@ -425,6 +425,16 @@
                                     <action selector="listenClicked:" destination="j8R-gP-8q3" eventType="touchUpInside" id="AZe-wq-Xr2"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="1Tl-Vg-Uzb">
+                                <rect key="frame" x="303" y="150" width="59" height="51"/>
+                                <color key="thumbTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="changeVolume:" destination="j8R-gP-8q3" eventType="valueChanged" id="JfU-9B-BxU"/>
+                                </connections>
+                            </slider>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Speaker" translatesAutoresizingMaskIntoConstraints="NO" id="fIV-hd-XVi">
+                                <rect key="frame" x="276" y="166" width="24" height="18"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQn-ba-6SC" userLabel="backgroundPitchView">
                                 <rect key="frame" x="0.0" y="489" width="375" height="120.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -458,6 +468,8 @@
                             <constraint firstItem="vpX-1v-c4y" firstAttribute="centerX" secondItem="ZM9-iz-ahR" secondAttribute="centerX" id="7EB-TF-8Lg"/>
                             <constraint firstItem="vLo-43-DUQ" firstAttribute="leading" secondItem="efA-4u-Hq5" secondAttribute="leading" constant="15" id="7QI-dc-HoB"/>
                             <constraint firstItem="nCd-kA-QJC" firstAttribute="height" secondItem="fOt-dX-DUS" secondAttribute="height" multiplier="0.25" id="8PG-bh-TbP"/>
+                            <constraint firstItem="1Tl-Vg-Uzb" firstAttribute="centerY" secondItem="DTg-hq-52E" secondAttribute="centerY" id="AQp-Tp-klP"/>
+                            <constraint firstItem="1Tl-Vg-Uzb" firstAttribute="leading" secondItem="fIV-hd-XVi" secondAttribute="trailing" constant="5" id="Ak9-0y-YEI"/>
                             <constraint firstItem="6aE-v2-nfh" firstAttribute="leading" secondItem="efA-4u-Hq5" secondAttribute="leading" constant="15" id="Ba8-CW-jYZ"/>
                             <constraint firstItem="5SB-Qp-2N9" firstAttribute="trailing" secondItem="nR5-EI-oYZ" secondAttribute="trailing" id="Bn8-pW-haT"/>
                             <constraint firstItem="G9l-Q3-rOf" firstAttribute="trailing" secondItem="efA-4u-Hq5" secondAttribute="trailing" id="C2a-yK-8YF"/>
@@ -472,12 +484,14 @@
                             <constraint firstItem="p1f-a3-w1N" firstAttribute="centerY" secondItem="cgL-1e-fKt" secondAttribute="centerY" id="PLB-fl-nPf"/>
                             <constraint firstItem="5SB-Qp-2N9" firstAttribute="width" secondItem="nR5-EI-oYZ" secondAttribute="width" id="Pim-r5-dlZ"/>
                             <constraint firstItem="fOt-dX-DUS" firstAttribute="top" secondItem="dQN-84-vrD" secondAttribute="top" id="QBx-Bc-pch"/>
+                            <constraint firstItem="efA-4u-Hq5" firstAttribute="trailing" secondItem="1Tl-Vg-Uzb" secondAttribute="trailing" constant="15" id="RSr-We-8by"/>
                             <constraint firstItem="nR5-EI-oYZ" firstAttribute="height" secondItem="ZM9-iz-ahR" secondAttribute="height" multiplier="0.6" id="RsW-pI-lWX"/>
                             <constraint firstItem="p1f-a3-w1N" firstAttribute="centerX" secondItem="cgL-1e-fKt" secondAttribute="centerX" id="Tqo-yT-SKp"/>
                             <constraint firstItem="vpX-1v-c4y" firstAttribute="centerY" secondItem="ZM9-iz-ahR" secondAttribute="centerY" id="Tvw-XY-HDW"/>
                             <constraint firstItem="efA-4u-Hq5" firstAttribute="trailing" secondItem="6aE-v2-nfh" secondAttribute="trailing" constant="15" id="UBe-2y-iU4"/>
                             <constraint firstItem="fOt-dX-DUS" firstAttribute="height" secondItem="ZM9-iz-ahR" secondAttribute="height" id="Ugo-Ld-gdw"/>
                             <constraint firstItem="nCd-kA-QJC" firstAttribute="leading" secondItem="efA-4u-Hq5" secondAttribute="leading" constant="20" id="VK4-Ji-IBU"/>
+                            <constraint firstItem="fIV-hd-XVi" firstAttribute="centerY" secondItem="1Tl-Vg-Uzb" secondAttribute="centerY" id="Waj-4B-iCj"/>
                             <constraint firstItem="ZM9-iz-ahR" firstAttribute="top" secondItem="6aE-v2-nfh" secondAttribute="bottom" constant="20" id="Xs8-rc-Fvu"/>
                             <constraint firstItem="G9l-Q3-rOf" firstAttribute="leading" secondItem="efA-4u-Hq5" secondAttribute="leading" id="XyJ-vo-dK5"/>
                             <constraint firstItem="QvZ-vt-PKc" firstAttribute="height" secondItem="nR5-EI-oYZ" secondAttribute="height" id="YMK-Ha-EM4"/>
@@ -489,6 +503,7 @@
                             <constraint firstItem="5SB-Qp-2N9" firstAttribute="leading" secondItem="nR5-EI-oYZ" secondAttribute="leading" id="fa5-PZ-qdL"/>
                             <constraint firstItem="p1f-a3-w1N" firstAttribute="trailing" secondItem="cgL-1e-fKt" secondAttribute="trailing" id="ftG-B0-jfU"/>
                             <constraint firstItem="cgL-1e-fKt" firstAttribute="centerY" secondItem="9Zl-63-rFk" secondAttribute="centerY" id="h41-hd-Vt7"/>
+                            <constraint firstItem="1Tl-Vg-Uzb" firstAttribute="height" secondItem="DTg-hq-52E" secondAttribute="height" id="ju6-MV-cbn"/>
                             <constraint firstItem="vLo-43-DUQ" firstAttribute="top" secondItem="G9l-Q3-rOf" secondAttribute="bottom" constant="40" id="kSy-xv-SCc"/>
                             <constraint firstItem="DTg-hq-52E" firstAttribute="height" secondItem="nCd-kA-QJC" secondAttribute="height" id="klF-gj-k5d"/>
                             <constraint firstItem="5SB-Qp-2N9" firstAttribute="height" secondItem="nR5-EI-oYZ" secondAttribute="height" id="ll0-97-fTU"/>
@@ -502,6 +517,7 @@
                             <constraint firstItem="lQn-ba-6SC" firstAttribute="top" secondItem="vLo-43-DUQ" secondAttribute="bottom" constant="30" id="vUM-Yc-EYz"/>
                             <constraint firstItem="dQN-84-vrD" firstAttribute="top" secondItem="6aE-v2-nfh" secondAttribute="bottom" constant="20" id="wRQ-A6-rQW"/>
                             <constraint firstItem="QvZ-vt-PKc" firstAttribute="centerY" secondItem="nR5-EI-oYZ" secondAttribute="centerY" id="xe0-YB-Td0"/>
+                            <constraint firstItem="1Tl-Vg-Uzb" firstAttribute="width" secondItem="DTg-hq-52E" secondAttribute="width" id="xip-oF-gqP"/>
                             <constraint firstItem="G9l-Q3-rOf" firstAttribute="top" secondItem="ZM9-iz-ahR" secondAttribute="bottom" id="xmi-rj-lh2"/>
                             <constraint firstItem="efA-4u-Hq5" firstAttribute="trailing" secondItem="nR5-EI-oYZ" secondAttribute="trailing" id="xyC-W4-xju"/>
                             <constraint firstItem="cgL-1e-fKt" firstAttribute="leading" secondItem="9Zl-63-rFk" secondAttribute="trailing" constant="15" id="z0a-hU-e4M"/>
@@ -528,6 +544,7 @@
                         <outlet property="plotOriginalWidth" destination="9Iw-mP-X6Z" id="gVQ-34-nts"/>
                         <outlet property="recordButton" destination="nCd-kA-QJC" id="OTE-1F-SMG"/>
                         <outlet property="recordingNameLabel" destination="6aE-v2-nfh" id="AcN-Pc-zkg"/>
+                        <outlet property="volumeSlider" destination="1Tl-Vg-Uzb" id="235-pM-86W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eeL-YS-GYn" userLabel="First Responder" sceneMemberID="firstResponder"/>
