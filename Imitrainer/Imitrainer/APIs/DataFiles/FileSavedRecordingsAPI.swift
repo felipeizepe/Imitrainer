@@ -40,6 +40,10 @@ class FileSavedRecordingsAPI : RecordingAPI {
 				
 				let pitchArray = NSArray(contentsOf: urlPitch) as? [Float]
 				
+				if pitchArray == nil {
+					continue
+				}
+				
 				let info = AudioInfo(recordedAudioFile: audioFile, recordedFrequencies: [0.0,0.0], recordedPitches: pitchArray!)
 				let currentRecording = Recording(recordingName: name, recordedInfo: info)
 				

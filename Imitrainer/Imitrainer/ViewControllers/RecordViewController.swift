@@ -47,7 +47,7 @@ class RecordViewController : UIViewController {
 	
 	//Pitch engine properties
 	var pitchEngine : 				PitchEngine!
-		var lastDetectedPitch : Pitch?
+	var lastDetectedPitch : Pitch?
 	var maxPitch = 700.0
 	var minPitch = 20.0
 	var maxNumberCount = 70
@@ -64,6 +64,7 @@ class RecordViewController : UIViewController {
 	
 	//MAKR: Lifecycle Methods
 	override func viewDidLoad() {
+		
 		//Setup and starts the actibity indicator
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
@@ -112,7 +113,6 @@ class RecordViewController : UIViewController {
 		
 	}
 	
-	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		//Checks if the recording is still ongoin so the file wont be currupted
 		if avAudioRecorder != nil {
@@ -123,7 +123,6 @@ class RecordViewController : UIViewController {
 		}
 	}
 	
-	
 	override func viewWillDisappear(_ animated: Bool) {
 		//Checks if the recording is still ongoin so the file wont be currupted
 		if avAudioRecorder != nil {
@@ -133,7 +132,6 @@ class RecordViewController : UIViewController {
 			finishRecording(success: false)
 		}
 	}
-	
 	
 	//MARK: Auxiliary Methods
 	
@@ -189,6 +187,7 @@ class RecordViewController : UIViewController {
 	
 	/// Starts the recording of the received audio
 	func startRecording() {
+		
 		//Gets the path where the audio should be recorded
 		let audioFilename = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).m4a")
 		
@@ -237,9 +236,10 @@ class RecordViewController : UIViewController {
 		avAudioRecorder.stop()
 		avAudioRecorder = nil
 		
-		//Writes the pitch array info to a file
-		let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
-		NSArray(array: pitchesArray).write(to: url, atomically: false)
+		self.navigationItem.hidesBackButton = false
+			//Writes the pitch array info to a file
+			let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
+			NSArray(array: pitchesArray).write(to: url, atomically: false)
 		
 	}
 	
@@ -343,12 +343,14 @@ class RecordViewController : UIViewController {
 	//MARK: Outlet Button Actions
 	
 	@IBAction func recordPress(_ sender: Any) {
-		
 		//Checks if a name for the recording has been typed
 		if recordinNameField.text == "" {
 			errorMssgName.isHidden = false
 			return
 		}
+		
+		//Setup view
+		self.navigationItem.hidesBackButton = true
 	
 		//Cleans the errors if the record press was succesful
 		errorMssgName.isHidden = true
