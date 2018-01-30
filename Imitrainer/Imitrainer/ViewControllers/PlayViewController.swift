@@ -48,6 +48,8 @@ class PlayViewController : UIViewController {
 	var freqSilence: 		AKBooster!
 	var microphonePlot: AKNodeOutputPlot!
 	var player : 				EZAudioPlayer!
+	//Attribute tha indicates whether the received sound values are suposed to be rated at the end
+	var isRating = false
 	
 	//Pitch engine properties
 	var pitchEngine: 				PitchEngine!
@@ -95,15 +97,12 @@ class PlayViewController : UIViewController {
 	
 	/// Setus up the plot of the microphone audio
 	func setupMicrophonePlot() {
-		let waveFormData = self.recording.infoData.audioFile.getWaveformData()
-		let size = Int32(bitPattern: (waveFormData?.bufferSize)!)
 		let plot = AKNodeOutputPlot(microphone, frame: audioPlotNew.bounds)
 		plot.plotType = .rolling
 		plot.shouldFill = true
 		plot.shouldMirror = true
 		plot.color = UIColor.white
 		plot.backgroundColor = ColorConstants.playRed
-		plot.setRollingHistoryLength(size)
 
 		//Plot adaptation to the screen
 		plot.fadeout = true
@@ -132,7 +131,7 @@ class PlayViewController : UIViewController {
 		
 		//Plot adaptation to the screen
 		self.audioPlotOriginal.fadeout = true
-		self.audioPlotOriginal.gain = 2.5
+		//self.audioPlotOriginal.gain = 2.5
 		self.audioPlotOriginal.updateBuffer(waveFormData?.buffers[0], withBufferSize: waveFormData!.bufferSize)
 		
 	}
@@ -211,8 +210,7 @@ class PlayViewController : UIViewController {
 			print(error)
 			self.pitchViewNew.addMeteringLevel(Float(20.1/FrequencyValidator.maximumFrequency))
 		}
-		
-		
+
 	}
 	
 	
@@ -230,6 +228,11 @@ class PlayViewController : UIViewController {
 		
 		listenButton.isEnabled = true
 		recordButton.isEnabled = true
+		
+		if isRating {
+			rateImitation()
+			isRating = false
+		}
 	}
 	
 	
@@ -253,12 +256,26 @@ class PlayViewController : UIViewController {
 		})
 	}
 	
+	
+	/// Function that deals with ratig the imitation and updateing the UI
+	func rateImitation(){
+		
+		let rater = ImitationRater(pitchOriginal: recording.infoData.pitches,
+															 pitchNew: pitchViewNew.meteringLevelsArray,
+															 pointsOriginal: audioPlotOriginal.points,
+															 pointsNew: microphonePlot.points)
+		//TODO: Updatede the UI to show the grade
+		print(rater.rate(precisionRate: 0.3, pointCount: audioPlotOriginal.pointCount))
+	}
+	
 	//MARK: Action Outlests
 	@IBAction func recordClicked(_ sender: Any) {
 		
 		recordButton.isEnabled = false
 		
 		countdownLabel.isHidden = false
+		
+		isRating = true
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
 			self.countdownLabel.text = "3"
