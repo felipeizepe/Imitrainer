@@ -1,5 +1,5 @@
 # **Imitrainer - App para treino de imitações**
-Esse app tem como finalidaa auxiliar o treino de imitaçes de vozes de outras pessoas, desenvolvido para o iOS 11+
+Esse app tem como finalidade auxiliar o treino de imitaçes de vozes de outras pessoas, desenvolvido para o iOS 11+
 
 ## **Equipe**
 Criador: Felipe Izepe
@@ -12,5 +12,6 @@ Pods utilizados:
 *  FDWaveFormView
 *  SoundWave
 *  AudioKit
+*  Cosmos
   
   
