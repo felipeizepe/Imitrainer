@@ -50,17 +50,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="149.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="eXR-8T-VOq">
-                                                    <rect key="frame" x="5" y="10" width="365" height="129.5"/>
-                                                </imageView>
+                                                <view userInteractionEnabled="NO" alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vFU-Fq-XTu" customClass="FDWaveformView" customModule="FDWaveformView">
+                                                    <rect key="frame" x="4.5" y="9.5" width="365" height="129.5"/>
+                                                    <color key="backgroundColor" red="0.66919344663619995" green="0.83932620286941528" blue="0.86929076910018921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aci-mR-wt2">
                                                     <rect key="frame" x="20" y="64" width="325" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ldz-VF-yPq" customClass="CosmosView" customModule="Cosmos">
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ldz-VF-yPq" customClass="CosmosView" customModule="Cosmos">
                                                     <rect key="frame" x="187.5" y="107" width="182.5" height="32.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="rating">
                                                             <real key="value" value="0.0"/>
@@ -91,23 +93,19 @@
                                             </subviews>
                                             <color key="backgroundColor" red="0.031346224248409271" green="0.37062597274780273" blue="0.49565070867538452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="bottom" secondItem="eXR-8T-VOq" secondAttribute="bottom" id="2sk-T1-Cgd"/>
-                                                <constraint firstItem="eXR-8T-VOq" firstAttribute="top" secondItem="MZJ-ig-3zn" secondAttribute="top" constant="10" id="Nbq-om-g1B"/>
-                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="width" secondItem="eXR-8T-VOq" secondAttribute="width" multiplier="0.5" id="R3w-82-V34"/>
+                                                <constraint firstItem="aci-mR-wt2" firstAttribute="centerY" secondItem="vFU-Fq-XTu" secondAttribute="centerY" id="6ng-iJ-cb9"/>
+                                                <constraint firstAttribute="trailing" secondItem="vFU-Fq-XTu" secondAttribute="trailing" constant="5" id="CNi-Oj-CO5"/>
+                                                <constraint firstAttribute="bottom" secondItem="vFU-Fq-XTu" secondAttribute="bottom" constant="10" id="ImC-SF-KyA"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="aci-mR-wt2" secondAttribute="trailing" constant="15" id="T1l-RC-TkL"/>
-                                                <constraint firstItem="aci-mR-wt2" firstAttribute="centerY" secondItem="eXR-8T-VOq" secondAttribute="centerY" id="aXX-8y-rMx"/>
-                                                <constraint firstItem="eXR-8T-VOq" firstAttribute="leading" secondItem="MZJ-ig-3zn" secondAttribute="leading" constant="5" id="ceK-VK-3Nv"/>
+                                                <constraint firstItem="vFU-Fq-XTu" firstAttribute="top" secondItem="MZJ-ig-3zn" secondAttribute="top" constant="10" id="dR8-77-nMX"/>
                                                 <constraint firstItem="aci-mR-wt2" firstAttribute="leading" secondItem="MZJ-ig-3zn" secondAttribute="leadingMargin" constant="5" id="fDc-FE-jtW"/>
-                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="height" secondItem="eXR-8T-VOq" secondAttribute="height" multiplier="0.25" id="g6C-WN-0Or"/>
-                                                <constraint firstAttribute="trailing" secondItem="eXR-8T-VOq" secondAttribute="trailing" constant="5" id="gmM-AL-3Lv"/>
-                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="trailing" secondItem="eXR-8T-VOq" secondAttribute="trailing" id="hWe-Lw-sTk"/>
-                                                <constraint firstAttribute="bottom" secondItem="eXR-8T-VOq" secondAttribute="bottom" constant="10" id="nZI-oI-hub"/>
+                                                <constraint firstItem="vFU-Fq-XTu" firstAttribute="leading" secondItem="MZJ-ig-3zn" secondAttribute="leading" constant="5" id="x7u-nD-WoT"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="ratingView" destination="Ldz-VF-yPq" id="fEB-n1-Obu"/>
-                                            <outlet property="recordImage" destination="eXR-8T-VOq" id="mBx-UY-rmv"/>
                                             <outlet property="recordNameLabel" destination="aci-mR-wt2" id="6K2-yX-Nye"/>
+                                            <outlet property="waveformView" destination="vFU-Fq-XTu" id="4cs-Dw-xee"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -634,6 +632,5 @@
         <image name="StopButtonDeactivted" width="20" height="20"/>
         <image name="StopClick" width="20" height="20"/>
         <image name="backgroundPitch" width="362" height="86"/>
-        <image name="placeholder" width="340" height="118"/>
     </resources>
 </document>

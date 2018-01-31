@@ -91,8 +91,6 @@ class ImitationRater {
 				continue
 			}
 			
-			print("Target: \(target.y) - Value: \(point.y)")
-			
 			//Checks for the hits
 			if(pointHit(point1: point, point2: target, precision: precisionRate)){
 				hit += 1

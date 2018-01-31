@@ -215,10 +215,15 @@ extension ListViewController : UITableViewDataSource {
 		}
 		
 		cell.recordNameLabel.text = record.name
+		cell.ratingView.settings.updateOnTouch = false
 		
 		if let rating = record.lastRatign {
 			cell.ratingView.rating = rating
+		
 		}
+		
+		//MARK: Setup cell soundwave image
+		cell.waveformView.audioURL = record.infoData.audioFile.url
 		
 		return cell
 	
@@ -258,8 +263,6 @@ extension ListViewController: UISearchBarDelegate {
 	}
 	
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-		
-		
 		
 		self.searchIsActive = true;
 		self.searchBar.showsCancelButton = true

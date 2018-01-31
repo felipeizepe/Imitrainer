@@ -8,14 +8,15 @@
 
 import UIKit
 import Cosmos
+import FDWaveformView
 
 class ListViewCell: UITableViewCell {
 	
 	//MARK: Outlets
 	@IBOutlet weak var recordNameLabel: UILabel!
-	@IBOutlet weak var recordImage: 		UIImageView!
 	@IBOutlet weak var ratingView: 			CosmosView!
 	
+	@IBOutlet weak var waveformView: FDWaveformView!
 	//MARK: Properties
 	
     override func awakeFromNib() {
