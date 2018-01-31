@@ -216,6 +216,10 @@ extension ListViewController : UITableViewDataSource {
 		
 		cell.recordNameLabel.text = record.name
 		
+		if let rating = record.lastRatign {
+			cell.ratingView.rating = rating
+		}
+		
 		return cell
 	
 	}

@@ -13,6 +13,7 @@ import AudioKitUI
 import SoundWave
 import Beethoven
 import Pitchy
+import Cosmos
 
 class PlayViewController : UIViewController {
 	
@@ -35,6 +36,9 @@ class PlayViewController : UIViewController {
 	@IBOutlet weak var plotOriginalWidth: NSLayoutConstraint!
 	
 	@IBOutlet weak var pitchViewOriginalWidth: NSLayoutConstraint!
+	
+	//MARK: rating outlets
+	@IBOutlet weak var ratingView: CosmosView!
 	
 	//MARK: Properties
 	var recording: Recording!
@@ -85,6 +89,9 @@ class PlayViewController : UIViewController {
 		setupPitchGraph()
 		setupOriginalPitchGraph()
 		
+		//Rating setup
+		ratingView.settings.updateOnTouch = false
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -131,7 +138,7 @@ class PlayViewController : UIViewController {
 		
 		//Plot adaptation to the screen
 		self.audioPlotOriginal.fadeout = true
-		//self.audioPlotOriginal.gain = 2.5
+		self.audioPlotOriginal.gain = 1.3
 		self.audioPlotOriginal.updateBuffer(waveFormData?.buffers[0], withBufferSize: waveFormData!.bufferSize)
 		
 	}
@@ -265,7 +272,10 @@ class PlayViewController : UIViewController {
 															 pointsOriginal: audioPlotOriginal.points,
 															 pointsNew: microphonePlot.points)
 		//TODO: Updatede the UI to show the grade
-		print(rater.rate(precisionRate: 0.3, pointCount: audioPlotOriginal.pointCount))
+		
+		ratingView.rating = rater.rate(precisionRate: 0.70, pointCount: audioPlotOriginal.pointCount)
+		recording.lastRatign = ratingView.rating
+		UserDefaults.standard.setValue(ratingView.rating, forKey: "\(recording.name)")
 	}
 	
 	//MARK: Action Outlests
@@ -276,6 +286,7 @@ class PlayViewController : UIViewController {
 		countdownLabel.isHidden = false
 		
 		isRating = true
+		ratingView.rating = 0.0
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
 			self.countdownLabel.text = "3"

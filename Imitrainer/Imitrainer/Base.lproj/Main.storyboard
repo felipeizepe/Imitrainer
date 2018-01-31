@@ -59,19 +59,53 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ldz-VF-yPq" customClass="CosmosView" customModule="Cosmos">
+                                                    <rect key="frame" x="187.5" y="107" width="182.5" height="32.5"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
+                                                            <integer key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                                            <real key="value" value="30"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                                                            <color key="value" red="0.99772769210000001" green="0.98410207029999996" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
+                                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="filledBorderColor">
+                                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                                            <real key="value" value="7"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
+                                                            <integer key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.031346224248409271" green="0.37062597274780273" blue="0.49565070867538452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="bottom" secondItem="eXR-8T-VOq" secondAttribute="bottom" id="2sk-T1-Cgd"/>
                                                 <constraint firstItem="eXR-8T-VOq" firstAttribute="top" secondItem="MZJ-ig-3zn" secondAttribute="top" constant="10" id="Nbq-om-g1B"/>
+                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="width" secondItem="eXR-8T-VOq" secondAttribute="width" multiplier="0.5" id="R3w-82-V34"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="aci-mR-wt2" secondAttribute="trailing" constant="15" id="T1l-RC-TkL"/>
                                                 <constraint firstItem="aci-mR-wt2" firstAttribute="centerY" secondItem="eXR-8T-VOq" secondAttribute="centerY" id="aXX-8y-rMx"/>
                                                 <constraint firstItem="eXR-8T-VOq" firstAttribute="leading" secondItem="MZJ-ig-3zn" secondAttribute="leading" constant="5" id="ceK-VK-3Nv"/>
                                                 <constraint firstItem="aci-mR-wt2" firstAttribute="leading" secondItem="MZJ-ig-3zn" secondAttribute="leadingMargin" constant="5" id="fDc-FE-jtW"/>
+                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="height" secondItem="eXR-8T-VOq" secondAttribute="height" multiplier="0.25" id="g6C-WN-0Or"/>
                                                 <constraint firstAttribute="trailing" secondItem="eXR-8T-VOq" secondAttribute="trailing" constant="5" id="gmM-AL-3Lv"/>
+                                                <constraint firstItem="Ldz-VF-yPq" firstAttribute="trailing" secondItem="eXR-8T-VOq" secondAttribute="trailing" id="hWe-Lw-sTk"/>
                                                 <constraint firstAttribute="bottom" secondItem="eXR-8T-VOq" secondAttribute="bottom" constant="10" id="nZI-oI-hub"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="ratingView" destination="Ldz-VF-yPq" id="fEB-n1-Obu"/>
                                             <outlet property="recordImage" destination="eXR-8T-VOq" id="mBx-UY-rmv"/>
                                             <outlet property="recordNameLabel" destination="aci-mR-wt2" id="6K2-yX-Nye"/>
                                         </connections>
@@ -381,8 +415,46 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G9l-Q3-rOf">
                                 <rect key="frame" x="0.0" y="350" width="375" height="48"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aBr-uW-SAO" customClass="CosmosView" customModule="Cosmos">
+                                        <rect key="frame" x="50" y="5" width="275" height="38"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                                <real key="value" value="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                                <real key="value" value="40"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                                                <color key="value" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="emptyColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="filledBorderColor">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                                <real key="value" value="13"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="aBr-uW-SAO" firstAttribute="top" secondItem="G9l-Q3-rOf" secondAttribute="top" constant="5" id="Cuq-r5-aIl"/>
+                                    <constraint firstAttribute="trailing" secondItem="aBr-uW-SAO" secondAttribute="trailing" constant="50" id="DnB-Ia-bob"/>
+                                    <constraint firstItem="aBr-uW-SAO" firstAttribute="leading" secondItem="G9l-Q3-rOf" secondAttribute="leading" constant="50" id="i4q-Z6-3yE"/>
+                                    <constraint firstAttribute="bottom" secondItem="aBr-uW-SAO" secondAttribute="bottom" constant="5" id="pEh-wj-Zqg"/>
                                     <constraint firstAttribute="height" constant="48" id="vH9-hA-nKa"/>
                                 </constraints>
                             </view>
@@ -542,6 +614,7 @@
                         <outlet property="pitchViewOriginal" destination="QvZ-vt-PKc" id="dg0-Hr-8Md"/>
                         <outlet property="pitchViewOriginalWidth" destination="19m-oC-Q3c" id="Oiz-3p-8Q9"/>
                         <outlet property="plotOriginalWidth" destination="9Iw-mP-X6Z" id="gVQ-34-nts"/>
+                        <outlet property="ratingView" destination="aBr-uW-SAO" id="Ikt-Fz-uPP"/>
                         <outlet property="recordButton" destination="nCd-kA-QJC" id="OTE-1F-SMG"/>
                         <outlet property="recordingNameLabel" destination="6aE-v2-nfh" id="AcN-Pc-zkg"/>
                         <outlet property="volumeSlider" destination="1Tl-Vg-Uzb" id="235-pM-86W"/>

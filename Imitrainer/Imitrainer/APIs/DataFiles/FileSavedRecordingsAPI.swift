@@ -47,6 +47,10 @@ class FileSavedRecordingsAPI : RecordingAPI {
 				let info = AudioInfo(recordedAudioFile: audioFile, recordedFrequencies: [0.0,0.0], recordedPitches: pitchArray!)
 				let currentRecording = Recording(recordingName: name, recordedInfo: info)
 				
+				if let rating = UserDefaults.standard.value(forKey: "\(currentRecording.name)") {
+					currentRecording.lastRatign = rating as? Double
+				}
+				
 				result.append(currentRecording)
 			}
 			
@@ -68,6 +72,8 @@ class FileSavedRecordingsAPI : RecordingAPI {
 			let pitchUrl = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
 			
 			try fileManager.removeItem(at: pitchUrl)
+			
+			UserDefaults.standard.removeObject(forKey: "\(recording.name)")
 			
 			completion(true,nil)
 			

@@ -52,17 +52,21 @@ class ImitationRater {
 		var miss = 0
 		
 		//Check every pitch and if it is inside the precision required adds a hit, if not adds a miss
-		for pitchIndex in 0..<pitchOriginal.count {
-			
-			let pitchValue = pitchNew[pitchIndex]
-			let pitchTarget = pitchOriginal[pitchIndex]
-			
-			if pitchValue * precisionRate >= pitchTarget && pitchValue * (1 + (1 - precisionRate)) >= pitchTarget{
-				hit += 1
-			}else {
-				miss += 1
-			}
-		}
+//		for pitchIndex in 0..<pitchOriginal.count {
+//
+//			let pitchValue = pitchNew[pitchIndex]
+//			let pitchTarget = pitchOriginal[pitchIndex]
+//
+//			if pitchTarget < 0.03 {
+//				continue
+//			}
+//
+//			if pitchValue * precisionRate >= pitchTarget && pitchValue * (1 + (1 - precisionRate)) >= pitchTarget{
+//				hit += 1
+//			}else {
+//				miss += 1
+//			}
+//		}
 		var pointArray = [CGPoint]()
 		var originalPointArray = [CGPoint]()
 		
@@ -81,10 +85,13 @@ class ImitationRater {
 			let point = pointArray[index]
 			var target = originalPointArray[index]
 			
+			
 			//If either of the y values are 0 it is considered a error in recording and not accounted for
-			if point.y == 0 || target.y == 0 {
+			if target.y < 0.025 || point.y == 0.0 {
 				continue
 			}
+			
+			print("Target: \(target.y) - Value: \(point.y)")
 			
 			//Checks for the hits
 			if(pointHit(point1: point, point2: target, precision: precisionRate)){
