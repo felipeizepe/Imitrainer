@@ -50,7 +50,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="149.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view userInteractionEnabled="NO" alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vFU-Fq-XTu" customClass="FDWaveformView" customModule="FDWaveformView">
+                                                <view userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vFU-Fq-XTu" customClass="FDWaveformView" customModule="FDWaveformView">
                                                     <rect key="frame" x="4.5" y="9.5" width="365" height="129.5"/>
                                                     <color key="backgroundColor" red="0.66919344663619995" green="0.83932620286941528" blue="0.86929076910018921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
