@@ -120,6 +120,10 @@ class ImitationRater {
 		}
 		
 		//Calculates the grade
+		if hit == 0 && miss == 0 {
+			return 0
+		}
+		
 		grade = Double(hit) / Double(hit + miss) * 5
 
 		return grade

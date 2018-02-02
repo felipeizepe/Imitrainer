@@ -260,6 +260,8 @@ class PlayViewController : UIViewController {
 		let deadlineTime = DispatchTime.now() + self.recording.infoData.audioFile.duration
 		DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
 			unownedSelf.stopRecoring()
+			//Setup view
+			self.navigationItem.hidesBackButton = false
 		})
 	}
 	
@@ -284,6 +286,9 @@ class PlayViewController : UIViewController {
 		recordButton.isEnabled = false
 		
 		countdownLabel.isHidden = false
+		
+		//Setup view
+		self.navigationItem.hidesBackButton = true
 		
 		isRating = true
 		ratingView.rating = 0.0
@@ -315,6 +320,9 @@ class PlayViewController : UIViewController {
 		activityIndicator.startAnimating()
 		
 		listenButton.isEnabled = false
+		
+		//Setup view
+		self.navigationItem.hidesBackButton = true
 		
 		startSignalRead()
 		self.player.playAudioFile(recording.infoData.audioFile)

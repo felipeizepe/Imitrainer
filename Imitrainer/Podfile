@@ -5,7 +5,7 @@ target 'Imitrainer' do
   pod 'Beethoven'
   pod 'FDWaveformView’
   pod ‘SoundWave’
-  pod 'AudioKit', '~> 4.0'
+  pod 'AudioKit'
   pod 'Cosmos', '~> 13.0'
 
 

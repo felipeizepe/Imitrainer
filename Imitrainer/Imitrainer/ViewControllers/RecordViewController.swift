@@ -268,6 +268,8 @@ class RecordViewController : UIViewController {
 		//TODO: adjust the pitch graph movement and recording to enable longer recording sessions
 		if pitchAudioView.meteringLevelsArray.count > maxNumberCount {
 			stopRecording()
+			countdownLabel.text = "Count"
+			self.recordButton.isEnabled = false
 		}
 		
 	}
@@ -289,7 +291,6 @@ class RecordViewController : UIViewController {
 			lastDetectedPitch = nil
 			
 		} catch {
-			print(error)
 			
 			let percent = Float(20.1/FrequencyValidator.maximumFrequency)
 			
