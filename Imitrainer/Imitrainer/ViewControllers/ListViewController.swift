@@ -69,8 +69,6 @@ class ListViewController: UIViewController {
 			//Sorts the recordings by name
 			self.recordingList = recordings?.sorted {
 				return $0.name < $1.name
-				
-				
 			}
 			
 			//Updates the data and the views
@@ -197,22 +195,35 @@ extension ListViewController : UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		
+		return activeList?.count ?? 0
+		
+		/*
 		if !searchIsActive {
 			return recordingList?.count ?? 0
 		}
-			return searchResults.count
+			return searchResults.count */
 	}
+	
+	var activeList: [Recording]? {
+		get {
+			return  !searchIsActive  ? recordingList : searchResults
+		}
+	}
+	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "listViewCell", for: indexPath) as! ListViewCell
 	
 		let record: Recording
 		
+		record = activeList![indexPath.row]
+		
+		/*
 		if !searchIsActive {
 			record = recordingList![indexPath.row]
 		}else{
 			record = searchResults[indexPath.row]
-		}
+		}*/
 		
 		cell.recordNameLabel.text = record.name
 		cell.ratingView.settings.updateOnTouch = false

@@ -10,8 +10,6 @@ import Foundation
 import UIKit
 import AudioKit
 import AudioKitUI
-import Pitchy
-import Beethoven
 import SoundWave
 import AVFoundation
 
@@ -46,16 +44,9 @@ class RecordViewController : UIViewController {
 	
 	
 	//Pitch engine properties
-	var pitchEngine : 				PitchEngine!
-	var lastDetectedPitch : Pitch?
-	var maxPitch = 700.0
-	var minPitch = 20.0
-	var maxNumberCount = 70
+	var pitchControl: PitchController!
 	var pitchesArray: [Float]!
-
-	
-	//Timer to add a pitch every second
-	weak var timer: Timer!
+	var maxNumberCount = 60
 	
 	//AVAudioRecord properties
 	var avRecordingSession: AVAudioSession!
@@ -82,7 +73,8 @@ class RecordViewController : UIViewController {
 		setupMicrophonePlot()
 		
 		//MARK: Pitch setup
-		setupPitchListener()
+		pitchControl = PitchController()
+		pitchControl.delegate = self
 		setupPitchGraph()
 		
 		//MARK: Setup AV session
@@ -151,17 +143,6 @@ class RecordViewController : UIViewController {
 		graphMicPlot.sendSubview(toBack: plot)
 	}
 	
-	
-	/// setus up the pitch input
-	func setupPitchListener(){
-		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
-		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
-		FrequencyValidator.minimumFrequency = 20.0
-		FrequencyValidator.maximumFrequency = 600.0
-	}
-	
-	
-	
 	/// Configures the pitch graph layout
 	func setupPitchGraph(){
 		self.pitchAudioView.meteringLevelBarWidth = 2.5
@@ -212,15 +193,9 @@ class RecordViewController : UIViewController {
 	/// Stops the current recording
 	func stopRecording()  {
 		//Pauses the receiving of data and inputs
-		self.pitchEngine.stop()
-		
+		pitchControl.stop()
 		avAudioRecorder.pause()
 		AudioKit.stop()
-		
-		//Invalidates the timer to stop the pitch update
-		if timer.isValid {
-			timer.invalidate()
-		}
 		
 		//re-enables the buttons
 		saveButton.isEnabled = true
@@ -243,64 +218,6 @@ class RecordViewController : UIViewController {
 		
 	}
 	
-	
-	/// Method that add a pitch bar to the graph
-	///
-	/// - Parameter pitch: measure pitch to be added
-	func addBarToPitchGraph(pitch : Pitch){
-		
-		//Verifies if the pitch if the pitch isn`t above the max
-		
-		var value : Double
-		
-		if pitch.frequency > self.maxPitch {
-			value = FrequencyValidator.maximumFrequency
-		}else {
-			value = pitch.frequency
-		}
-		
-		let percent = value/maxPitch
-		
-		self.pitchAudioView.addMeteringLevel(Float(percent))
-		pitchesArray.append(Float(percent))
-		
-		//Restricts the number of pitch values to be recorded so that they don`t go off the screen on the play screen
-		//TODO: adjust the pitch graph movement and recording to enable longer recording sessions
-		if pitchAudioView.meteringLevelsArray.count > maxNumberCount {
-			stopRecording()
-			countdownLabel.text = "Count"
-			self.recordButton.isEnabled = false
-		}
-		
-	}
-	
-	
-	/// Function that causes the graph to update every second to maintain the syncrony
-	@objc func updatePitchPlot(){
-		do{
-			var pitchToDraw : Pitch? = nil
-			
-			//Check if a pitch was detected, if not puts a value of pitch in the graph
-			if let pitch = lastDetectedPitch {
-				pitchToDraw = pitch
-			}else {
-				pitchToDraw = try Pitch(frequency: 20.1)
-			}
-			
-			addBarToPitchGraph(pitch: pitchToDraw!)
-			lastDetectedPitch = nil
-			
-		} catch {
-			
-			let percent = Float(20.1/FrequencyValidator.maximumFrequency)
-			
-			self.pitchAudioView.addMeteringLevel(percent)
-			pitchesArray.append(percent)
-			
-		}
-	}
-	
-	
 	/// Function that gets the ducument darectory of the project to save/read files
 	///
 	/// - Returns: path to the directory of the program
@@ -315,7 +232,7 @@ class RecordViewController : UIViewController {
 		//starts all the recordings and input receiving
 		setupAVSession()
 		AudioKit.start()
-		self.pitchEngine.start()
+		self.pitchControl.start()
 		
 		if avAudioRecorder == nil {
 			startRecording()
@@ -327,10 +244,6 @@ class RecordViewController : UIViewController {
 		saveButton.isEnabled = false
 		recordButton.isEnabled = false
 		stopButton.isEnabled = true
-		
-		//setup the timer
-		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(RecordViewController.updatePitchPlot)), userInfo: nil, repeats: true)
-		
 		countdownLabel.isHidden = true
 		
 	}
@@ -397,18 +310,32 @@ class RecordViewController : UIViewController {
 }
 
 //MARK: Pitch Listener Extension
-extension RecordViewController : PitchEngineDelegate {
-	func pitchEngine(_ pitchEngine: PitchEngine, didReceivePitch pitch: Pitch) {
-		self.lastDetectedPitch = pitch
-	}
-	
-	func pitchEngine(_ pitchEngine: PitchEngine, didReceiveError error: Error) {
-		//Function that recieves errors of pitch readings, it is called constantly
-	}
-	
-	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {
+extension RecordViewController : PitchReceiver {
+	func receivePitch(pitch: Double?) {
+		
+		if pitch == nil {
+			let percent = PitchController.minPitch/PitchController.maxPitch
+			self.pitchAudioView.addMeteringLevel(Float(percent))
+			pitchesArray.append(Float(percent))
+			return
+		}
+		
+		let percent = pitch!/PitchController.maxPitch
+		
+		self.pitchAudioView.addMeteringLevel(Float(percent))
+		pitchesArray.append(Float(percent))
+		
+		//Restricts the number of pitch values to be recorded so that they don`t go off the screen on the play screen
+		//TODO: adjust the pitch graph movement and recording to enable longer recording sessions
+		if pitchAudioView.meteringLevelsArray.count > maxNumberCount {
+			stopRecording()
+			countdownLabel.text = "Count"
+			self.recordButton.isEnabled = false
+		}
 		
 	}
+	
+	
 }
 
 //MARK: AVRecorder Delegate

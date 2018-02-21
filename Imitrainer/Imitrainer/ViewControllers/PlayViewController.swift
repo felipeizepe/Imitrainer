@@ -11,8 +11,6 @@ import UIKit
 import AudioKit
 import AudioKitUI
 import SoundWave
-import Beethoven
-import Pitchy
 import Cosmos
 
 class PlayViewController : UIViewController {
@@ -42,6 +40,7 @@ class PlayViewController : UIViewController {
 	
 	//MARK: Properties
 	var recording: Recording!
+	var pitchControl: PitchController!
 	//value found by testing the speed, it enables the view to move acordingly to
 	//accomodate for long audios
 	static let PIXEL_DRAW_SPEED_FACTOR = 36.5
@@ -54,15 +53,8 @@ class PlayViewController : UIViewController {
 	var player : 				EZAudioPlayer!
 	//Attribute tha indicates whether the received sound values are suposed to be rated at the end
 	var isRating = false
-	
-	//Pitch engine properties
-	var pitchEngine: 				PitchEngine!
-	var lastDetectedPitch: 	Pitch?
-	var maxPitch = 700.0
-	var minPitch = 20.0
+
 	weak var moveTimer: 		Timer!
-	
-	weak var timer: Timer!
 	
 	//MAKR: Lifecycle Methods
 	
@@ -81,11 +73,13 @@ class PlayViewController : UIViewController {
 		self.freqSilence = AKBooster(freqTracker, gain: 0)
 		self.player = EZAudioPlayer()
 		
+		self.pitchControl = PitchController()
+		self.pitchControl.delegate = self
+		
 		setupMicrophonePlot()
 		setupRecordPlot()
 		
 		//MARK: Pitch graph setup
-		setupPitchListener()
 		setupPitchGraph()
 		setupOriginalPitchGraph()
 		
@@ -143,16 +137,6 @@ class PlayViewController : UIViewController {
 		
 	}
 	
-	
-	/// Sets up the pitch input reader
-	func setupPitchListener(){
-		let config = Config(bufferSize: 4096, estimationStrategy: .yin, audioUrl: nil)
-		self.pitchEngine = PitchEngine(config: config, signalTracker: nil, delegate: self)
-		FrequencyValidator.minimumFrequency = 20.0
-		FrequencyValidator.maximumFrequency = 600.0
-	}
-	
-	
 	/// Sets up the pitch graph
 	func setupPitchGraph(){
 		self.pitchViewNew.meteringLevelBarWidth = 2.5
@@ -161,26 +145,6 @@ class PlayViewController : UIViewController {
 		self.pitchViewNew.audioVisualizationMode = .write
 		self.pitchViewNew.gradientStartColor = UIColor.white
 		self.pitchViewNew.gradientEndColor = UIColor.black
-	}
-	
-	
-	/// Adds a value of pitch to the graph
-	///
-	/// - Parameter pitch: pitch to be added
-	func addBarToPitchGraph(pitch : Pitch){
-		
-		var value : Double
-		
-		if pitch.frequency > self.maxPitch {
-			value = FrequencyValidator.maximumFrequency
-		}else {
-			value = pitch.frequency
-		}
-		
-		let percent = value/maxPitch
-		
-		self.pitchViewNew.addMeteringLevel(Float(percent))
-		
 	}
 	
 	//Sets up the pitch graph for the received audio file
@@ -199,38 +163,14 @@ class PlayViewController : UIViewController {
 		}
 	}
 	
-	/// Uptades the pitch graph with a new value every milisecond
-	@objc func updatePitchPlot(){
-		do{
-			var pitchToDraw : Pitch? = nil
-			
-			if let pitch = lastDetectedPitch {
-				pitchToDraw = pitch
-			}else {
-				pitchToDraw = try Pitch(frequency: 20.1)
-			}
-			
-			addBarToPitchGraph(pitch: pitchToDraw!)
-			lastDetectedPitch = nil
-			
-		} catch {
-			print(error)
-			self.pitchViewNew.addMeteringLevel(Float(20.1/FrequencyValidator.maximumFrequency))
-		}
-
-	}
+	
 	
 	
 	/// Function that stops the recording after a certain amount of time has passed
 	@objc func stopRecoring(){
-		self.pitchEngine.stop()
-		
+		pitchControl.stop()
 		AudioKit.stop()
-		
-		if timer.isValid {
-			timer.invalidate()
-		}
-		
+
 		countdownLabel.text = "Count"
 		
 		listenButton.isEnabled = true
@@ -250,10 +190,7 @@ class PlayViewController : UIViewController {
 		self.pitchViewNew.reset()
 		
 		AudioKit.start()
-		self.pitchEngine.start()
-		
-		//setup the timer
-		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(PlayViewController.updatePitchPlot)), userInfo: nil, repeats: true)
+		pitchControl.start()
 		
 		unowned let unownedSelf = self
 		
@@ -332,24 +269,22 @@ class PlayViewController : UIViewController {
 	}
 	
 	@IBAction func changeVolume(_ sender: Any) {
-		
 		player.volume = volumeSlider.value
-		
 	}
 	
 }
 
-extension PlayViewController : PitchEngineDelegate {
-	func pitchEngine(_ pitchEngine: PitchEngine, didReceivePitch pitch: Pitch) {
-		lastDetectedPitch = pitch
-	}
-	
-	func pitchEngine(_ pitchEngine: PitchEngine, didReceiveError error: Error) {
-
-	}
-	
-	func pitchEngineWentBelowLevelThreshold(_ pitchEngine: PitchEngine) {
+extension PlayViewController : PitchReceiver {
+	func receivePitch(pitch: Double?) {
 		
+		if pitch == nil {
+			let percent = PitchController.minPitch/PitchController.maxPitch
+			self.pitchViewNew.addMeteringLevel(Float(percent))
+			return
+		}
+		
+		let percent = pitch!/PitchController.maxPitch
+		
+		self.pitchViewNew.addMeteringLevel(Float(percent))
 	}
-	
 }
