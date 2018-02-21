@@ -165,13 +165,13 @@ class PlayViewController : UIViewController {
 	/// Function that deals with ratig the imitation and updateing the UI
 	func rateImitation(){
 		
-		let rater = ImitationRater(pitchOriginal: recording.infoData.pitches,
+		let rate = RaterData(pitchOriginal: recording.infoData.pitches,
 															 pitchNew: pitchViewNew.meteringLevelsArray,
 															 pointsOriginal: audioPlotOriginal.points,
 															 pointsNew: microphonePlot.points)
 		//TODO: Updatede the UI to show the grade
 		
-		ratingView.rating = rater.rate(precisionRate: 0.70, pointCount: audioPlotOriginal.pointCount)
+		ratingView.rating = Rater.rate(precisionRate: 0.70, pointCount: audioPlotOriginal.pointCount, data: rate)
 		recording.lastRatign = ratingView.rating
 		UserDefaults.standard.setValue(ratingView.rating, forKey: "\(recording.name)")
 	}
