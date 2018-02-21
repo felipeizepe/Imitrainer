@@ -80,8 +80,8 @@ class PlayViewController : UIViewController {
 		setupRecordPlot()
 		
 		//MARK: Pitch graph setup
-		setupPitchGraph()
-		setupOriginalPitchGraph()
+		PlotCotroller.setupPitchGraph(pitchGraph: self.pitchViewNew)
+		PlotCotroller.setupPitchGraph(pitchGraph: self.pitchViewOriginal, toPlot: recording.infoData.pitches)
 		
 		//Rating setup
 		ratingView.settings.updateOnTouch = false
@@ -98,20 +98,9 @@ class PlayViewController : UIViewController {
 	
 	/// Setus up the plot of the microphone audio
 	func setupMicrophonePlot() {
-		let plot = AKNodeOutputPlot(microphone, frame: audioPlotNew.bounds)
-		plot.plotType = .rolling
-		plot.shouldFill = true
-		plot.shouldMirror = true
-		plot.color = UIColor.white
-		plot.backgroundColor = ColorConstants.playRed
-
-		//Plot adaptation to the screen
-		plot.fadeout = true
-		plot.gain = 2.5
-		audioPlotNew.addSubview(plot)
-		audioPlotNew.sendSubview(toBack: plot)
-		
-		self.microphonePlot = plot
+		self.microphonePlot = PlotCotroller.getMicPlot(mic: microphone,bounds: audioPlotNew.bounds)
+		audioPlotNew.addSubview(microphonePlot)
+		audioPlotNew.sendSubview(toBack: microphonePlot)
 	}
 	
 	
@@ -134,37 +123,7 @@ class PlayViewController : UIViewController {
 		self.audioPlotOriginal.fadeout = true
 		self.audioPlotOriginal.gain = 1.3
 		self.audioPlotOriginal.updateBuffer(waveFormData?.buffers[0], withBufferSize: waveFormData!.bufferSize)
-		
 	}
-	
-	/// Sets up the pitch graph
-	func setupPitchGraph(){
-		self.pitchViewNew.meteringLevelBarWidth = 2.5
-		self.pitchViewNew.meteringLevelBarInterItem = 1.0
-		self.pitchViewNew.meteringLevelBarCornerRadius = 1.0
-		self.pitchViewNew.audioVisualizationMode = .write
-		self.pitchViewNew.gradientStartColor = UIColor.white
-		self.pitchViewNew.gradientEndColor = UIColor.black
-	}
-	
-	//Sets up the pitch graph for the received audio file
-	func setupOriginalPitchGraph(){
-		self.pitchViewOriginal.reset()
-		self.pitchViewOriginal.meteringLevelBarWidth = 2.5
-		self.pitchViewOriginal.meteringLevelBarInterItem = 1.0
-		self.pitchViewOriginal.meteringLevelBarCornerRadius = 1.0
-		self.pitchViewOriginal.audioVisualizationMode = .write
-		self.pitchViewOriginal.gradientStartColor = UIColor.white
-		self.pitchViewOriginal.gradientEndColor = UIColor.black
-		
-		//Loads the value of the recordings pitches to the pitch original graph
-		for value in recording.infoData.pitches {
-			pitchViewOriginal.addMeteringLevel(value)
-		}
-	}
-	
-	
-	
 	
 	/// Function that stops the recording after a certain amount of time has passed
 	@objc func stopRecoring(){

@@ -75,7 +75,7 @@ class RecordViewController : UIViewController {
 		//MARK: Pitch setup
 		pitchControl = PitchController()
 		pitchControl.delegate = self
-		setupPitchGraph()
+		PlotCotroller.setupPitchGraph(pitchGraph: self.pitchAudioView)
 		
 		//MARK: Setup AV session
 		saveButton.isEnabled = false
@@ -129,30 +129,10 @@ class RecordViewController : UIViewController {
 	
 	/// Setus up the plot of the microphone audio
 	func setupMicrophonePlot() {
-		let plot = AKNodeOutputPlot(microphone, frame: graphMicPlot.bounds)
-		plot.plotType = .rolling
-		plot.shouldFill = true
-		plot.shouldMirror = true
-		plot.color = UIColor.white
-		plot.backgroundColor = ColorConstants.playRed
-		
-		//Plot adaptation to the screen
-		plot.fadeout = true
-		plot.gain = 2.5
+		let plot = PlotCotroller.getMicPlot(mic: microphone,bounds: graphMicPlot.bounds)
 		graphMicPlot.addSubview(plot)
 		graphMicPlot.sendSubview(toBack: plot)
 	}
-	
-	/// Configures the pitch graph layout
-	func setupPitchGraph(){
-		self.pitchAudioView.meteringLevelBarWidth = 2.5
-		self.pitchAudioView.meteringLevelBarInterItem = 1.0
-		self.pitchAudioView.meteringLevelBarCornerRadius = 1.0
-		self.pitchAudioView.audioVisualizationMode = .write
-		self.pitchAudioView.gradientStartColor = UIColor.white
-		self.pitchAudioView.gradientEndColor = UIColor.black
-	}
-	
 	
 	/// Sets up the avSession to start the recording
 	func setupAVSession(){
