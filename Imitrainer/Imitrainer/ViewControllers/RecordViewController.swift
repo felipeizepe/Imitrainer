@@ -11,7 +11,6 @@ import UIKit
 import AudioKit
 import AudioKitUI
 import SoundWave
-import AVFoundation
 
 class RecordViewController : UIViewController {
 	
@@ -48,9 +47,8 @@ class RecordViewController : UIViewController {
 	var pitchesArray: [Float]!
 	var maxNumberCount = 60
 	
-	//AVAudioRecord properties
-	var avRecordingSession: AVAudioSession!
-	var avAudioRecorder: 		AVAudioRecorder!
+	//AVRecorder Properties
+	var recordController: RecordingController!
 	
 	
 	//MAKR: Lifecycle Methods
@@ -78,6 +76,7 @@ class RecordViewController : UIViewController {
 		PlotCotroller.setupPitchGraph(pitchGraph: self.pitchAudioView)
 		
 		//MARK: Setup AV session
+		recordController = RecordingController()
 		saveButton.isEnabled = false
 		stopButton.isEnabled = false
 		
@@ -96,32 +95,28 @@ class RecordViewController : UIViewController {
 	
 	deinit {
 		//Checks if the recording is still ongoin so the file wont be currupted
-		if avAudioRecorder != nil {
-			if avAudioRecorder.isRecording {
+			if recordController.isRecording {
 				stopRecording()
+				recordController.finishRecording(success: false, pitchesArray: pitchesArray)
+				self.navigationItem.hidesBackButton = false
 			}
-			finishRecording(success: false)
-		}
-		
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		//Checks if the recording is still ongoin so the file wont be currupted
-		if avAudioRecorder != nil {
-			if avAudioRecorder.isRecording {
-				stopRecording()
-			}
-			finishRecording(success: false)
+		if recordController.isRecording {
+			stopRecording()
+			recordController.finishRecording(success: false, pitchesArray: pitchesArray)
+			self.navigationItem.hidesBackButton = false
 		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		//Checks if the recording is still ongoin so the file wont be currupted
-		if avAudioRecorder != nil {
-			if avAudioRecorder.isRecording {
-				stopRecording()
-			}
-			finishRecording(success: false)
+		if recordController.isRecording {
+			stopRecording()
+			recordController.finishRecording(success: false, pitchesArray: pitchesArray)
+			self.navigationItem.hidesBackButton = false
 		}
 	}
 	
@@ -134,47 +129,12 @@ class RecordViewController : UIViewController {
 		graphMicPlot.sendSubview(toBack: plot)
 	}
 	
-	/// Sets up the avSession to start the recording
-	func setupAVSession(){
-		avRecordingSession = AVAudioSession.sharedInstance()
-		do {
-			try avRecordingSession.setActive(true)
-		} catch {
-			errorLabel.text = "Couldn't generate recording file"
-			errorLabel.isHidden = false
-		}
-	}
-	
-	
-	/// Starts the recording of the received audio
-	func startRecording() {
-		
-		//Gets the path where the audio should be recorded
-		let audioFilename = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).m4a")
-		
-		let settings = [
-			AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-			AVSampleRateKey: 12000,
-			AVNumberOfChannelsKey: 1,
-			AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-		]
-		
-		//Generates the file for the recording
-		do {
-			avAudioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
-			avAudioRecorder.delegate = self
-			avAudioRecorder.record()
-		} catch {
-			finishRecording(success: false)
-		}
-	}
-	
 	
 	/// Stops the current recording
 	func stopRecording()  {
 		//Pauses the receiving of data and inputs
 		pitchControl.stop()
-		avAudioRecorder.pause()
+		recordController.pauseRecording()
 		AudioKit.stop()
 		
 		//re-enables the buttons
@@ -183,42 +143,20 @@ class RecordViewController : UIViewController {
 		stopButton.isEnabled = false
 	}
 	
-	
-	/// Finishes the recording process and generates de m4a file with the sound
-	///
-	/// - Parameter success: indicates whether the operation of the recording was succesful or not
-	func finishRecording(success: Bool) {
-		avAudioRecorder.stop()
-		avAudioRecorder = nil
-		
-		self.navigationItem.hidesBackButton = false
-			//Writes the pitch array info to a file
-			let url = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recordinNameField.text!).sinfo")
-			NSArray(array: pitchesArray).write(to: url, atomically: false)
-		
-	}
-	
-	/// Function that gets the ducument darectory of the project to save/read files
-	///
-	/// - Returns: path to the directory of the program
-	static func getDocumentsDirectory() -> URL {
-		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-		let documentsDirectory = paths[0]
-		return documentsDirectory
-	}
-	
 	func startDelayedRecording(){
 		
 		//starts all the recordings and input receiving
-		setupAVSession()
+		if !recordController.setupAVSession() {
+			errorLabel.text = "Couldn't generate recording file"
+			errorLabel.isHidden = false
+			return
+		}
+		
 		AudioKit.start()
 		self.pitchControl.start()
-		
-		if avAudioRecorder == nil {
-			startRecording()
-		}else {
-			avAudioRecorder.record()
-		}
+		recordController.name = recordinNameField.text!
+		recordController.record()
+		recordController.avAudioRecorder.delegate = self
 		
 		//Disables the buttons
 		saveButton.isEnabled = false
@@ -281,10 +219,8 @@ class RecordViewController : UIViewController {
 	}
 	
 	@IBAction func savePressed(_ sender: Any) {
-		if avAudioRecorder != nil {
-			finishRecording(success: true)
-		}
-		//returns to the list of recordings
+		recordController.finishRecording(success: true, pitchesArray: pitchesArray)
+		//returns to the lisavAudioRecorder.stop()
 		self.navigationController?.popViewController(animated: true)
 	}
 }
@@ -317,19 +253,15 @@ extension RecordViewController : PitchReceiver {
 	
 	
 }
-
 //MARK: AVRecorder Delegate
 extension RecordViewController : AVAudioRecorderDelegate {
 	
 	func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
 		//Cloeses the recording if it was successful
 		if !flag {
-			if avAudioRecorder != nil {
-				finishRecording(success: true)
-			}
+			recordController.finishRecording(success: true, pitchesArray: pitchesArray)
 		}
 	}
-	
 }
 
 //MARK: Text Field delegate

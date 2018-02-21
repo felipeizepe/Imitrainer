@@ -18,7 +18,7 @@ class FileSavedRecordingsAPI : RecordingAPI {
 		
 		var result = [Recording]()
 		
-		let documentsUrl = RecordViewController.getDocumentsDirectory()
+		let documentsUrl = RecordingController.getDocumentsDirectory()
 		
 		do {
 			// Get the directory contents urls (including subfolders urls)
@@ -36,7 +36,7 @@ class FileSavedRecordingsAPI : RecordingAPI {
 				let audioFile = EZAudioFile(url: url)!
 				
 				//Reads the audio pitch recorded and adds to the properties 
-				let urlPitch = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(name).sinfo")
+				let urlPitch = RecordingController.getDocumentsDirectory().appendingPathComponent("\(name).sinfo")
 				
 				let pitchArray = NSArray(contentsOf: urlPitch) as? [Float]
 				
@@ -69,7 +69,7 @@ class FileSavedRecordingsAPI : RecordingAPI {
 			
 			try fileManager.removeItem(at: recording.infoData.audioFile.url)
 			
-			let pitchUrl = RecordViewController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
+			let pitchUrl = RecordingController.getDocumentsDirectory().appendingPathComponent("\(recording.name).sinfo")
 			
 			try fileManager.removeItem(at: pitchUrl)
 			
