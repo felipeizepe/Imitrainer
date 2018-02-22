@@ -40,6 +40,8 @@ class PitchController {
 		FrequencyValidator.maximumFrequency = 600.0
 	}
 	
+	
+	/// Starts the pitch values listening and the pitch engine
 	func start(){
 		self.pitchEngine.start()
 		
@@ -47,6 +49,7 @@ class PitchController {
 		timer = Timer.scheduledTimer(timeInterval: 0.1, target: self,   selector: (#selector(PitchController.signalPitch)), userInfo: nil, repeats: true)
 	}
 	
+	//Stops the pitch engine
 	func stop(){
 		self.pitchEngine.stop()
 		
@@ -56,7 +59,7 @@ class PitchController {
 	}
 	
 	
-	/// Uptades the pitch graph with a new value every milisecond
+	/// Updated the signal of the pitch and passes the value to the delegate
 	@objc func signalPitch(){
 		var pitchToDraw : Pitch? = nil
 		do{
@@ -67,6 +70,7 @@ class PitchController {
 			}
 			lastDetectedPitch = nil
 			
+			//Bounds pitch so it won`t exceed the boundaries
 			if pitchToDraw!.frequency > PitchController.maxPitch {
 				pitchToDraw = try Pitch(frequency: PitchController.maxPitch)
 			}
@@ -80,6 +84,7 @@ class PitchController {
 			
 		}
 		
+		//Delegates value if the pitch reading was successful or nil if it wasn't
 		if delegate != nil {
 			delegate!.receivePitch(pitch: pitchToDraw != nil ? pitchToDraw!.frequency : nil)
 		}

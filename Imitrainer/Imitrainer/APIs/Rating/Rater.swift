@@ -16,6 +16,7 @@ class Rater {
 	/// - Parameters:
 	///   - precisionRate: number from 0 to 1 that determines how precise the value has to be when compared to the original, 0 being always right and 1 being 100% precision required
 	///   - pointCount: number of point to be considered
+	///		-data: RaterData to calculate de rating of the recording
 	/// - Returns: Value of the grade from 0 to 5
 	static func rate(precisionRate: Float, pointCount: UInt32, data: RaterData) -> Double {
 		var grade = 0.0

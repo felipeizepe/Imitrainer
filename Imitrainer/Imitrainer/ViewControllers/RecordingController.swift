@@ -14,6 +14,8 @@ class RecordingController {
 	//AVAudioRecord properties
 	var avRecordingSession: AVAudioSession!
 	var avAudioRecorder: 		AVAudioRecorder!
+	
+	//Recoridng properties
 	var name: String!
 	var isRecording: Bool {
 		get {
@@ -24,10 +26,11 @@ class RecordingController {
 		}
 	}
 	
-	//MARK: Lifecycle
-	
 	//MARK: Auxiliar Methods
+	
 	/// Sets up the avSession to start the recording
+	///
+	/// - Returns: Boolean indicating if the setup was successful
 	func setupAVSession() -> Bool{
 		avRecordingSession = AVAudioSession.sharedInstance()
 		do {
@@ -35,10 +38,11 @@ class RecordingController {
 		} catch {
 			return false
 		}
-		
 		return true
 	}
 	
+	
+	/// Starts ou resumes the recording
 	func record(){
 		if avAudioRecorder == nil {
 			startRecording()
@@ -70,6 +74,7 @@ class RecordingController {
 			}
 	}
 	
+	//Pauses the recording
 	func pauseRecording(){
 			avAudioRecorder.pause()
 	}

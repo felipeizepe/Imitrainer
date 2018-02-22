@@ -11,8 +11,17 @@ import UIKit
 import AudioKitUI
 import SoundWave
 
+
+/// Class which defines methods that are commom among all the view that will plot the graphs
 class PlotCotroller {
 	
+	
+	/// gets a commom generated instance of AKNodeOutput to be used in a view
+	///
+	/// - Parameters:
+	///   - mic: mic to get the input to draw the graph
+	///   - bounds: size of the graph to be drawn
+	/// - Returns: returns the view plot
 	static func getMicPlot(mic: AKMicrophone, bounds: CGRect ) -> AKNodeOutputPlot{
 		let plot = AKNodeOutputPlot(mic, frame: bounds)
 		plot.plotType = .rolling
@@ -27,6 +36,10 @@ class PlotCotroller {
 		return plot
 	}
 	
+	
+	/// Sets up the a pitch graph commom to the views
+	///
+	/// - Parameter pitchGraph: pitchGraph to be setup
 	static func setupPitchGraph(pitchGraph: AudioVisualizationView){
 		pitchGraph.reset()
 		pitchGraph.meteringLevelBarWidth = 2.5
@@ -37,6 +50,12 @@ class PlotCotroller {
 		pitchGraph.gradientEndColor = UIColor.black
 	}
 	
+	
+	/// Setus up a pitch graph commom to the view based on a received flot array of vaues to plot
+	///
+	/// - Parameters:
+	///   - pitchGraph: graph to be setup
+	///   - toPlot: values to be plotted in the graph
 	static func setupPitchGraph(pitchGraph: AudioVisualizationView, toPlot: [Float]){
 		PlotCotroller.setupPitchGraph(pitchGraph: pitchGraph)
 		
